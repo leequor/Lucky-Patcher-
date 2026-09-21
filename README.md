@@ -1,7 +1,5 @@
-# Lucky-Patcher
-Names:
-1;   Rene
+1;   
 2;   
 3;   
 4;   
-5;   
+5;   De Guzman, Jaymark A.
