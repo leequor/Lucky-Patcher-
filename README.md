@@ -6,4 +6,4 @@
 
 4. Rian D. Sabrido
 
-5.Jaymark A. De Guzman
+5. Jaymark A. De Guzman
