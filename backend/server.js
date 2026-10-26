@@ -1,7 +1,58 @@
 const { createServer } = require("node:http");
-const { checkSupabaseConnection } = require("./supabase");
+const { checkSupabaseConnection, getSupabaseClient, signUpUser } = require("./supabase");
 
-function createApp({ checkConnection = checkSupabaseConnection } = {}) {
+function readJsonBody(request) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+
+    request.on("data", (chunk) => {
+      body += chunk;
+    });
+
+    request.on("end", () => {
+      if (!body) {
+        resolve({});
+        return;
+      }
+
+      try {
+        resolve(JSON.parse(body));
+      } catch {
+        reject(new Error("Request body must be valid JSON."));
+      }
+    });
+
+    request.on("error", reject);
+  });
+}
+
+function createApp({
+  checkConnection = checkSupabaseConnection,
+  signupHandler = async (request, response) => {
+    try {
+      const payload = await readJsonBody(request);
+      const result = await signUpUser(payload, undefined, process.env);
+
+      response.writeHead(result.status || 400, { "Content-Type": "application/json" });
+      response.end(
+        JSON.stringify(
+          result.ok
+            ? {
+                status: "success",
+                message: result.message,
+                user: result.user,
+              }
+            : {
+                error: result.message,
+              },
+        ),
+      );
+    } catch (error) {
+      response.writeHead(400, { "Content-Type": "application/json" });
+      response.end(JSON.stringify({ error: error.message || "Invalid sign-up request." }));
+    }
+  },
+} = {}) {
   return createServer((request, response) => {
     if (request.method === "GET" && request.url === "/api/health") {
       response.writeHead(200, { "Content-Type": "application/json" });
@@ -21,6 +72,11 @@ function createApp({ checkConnection = checkSupabaseConnection } = {}) {
           response.writeHead(503, { "Content-Type": "application/json" });
           response.end(JSON.stringify({ service: "supabase", status: "unavailable" }));
         });
+      return;
+    }
+
+    if (request.method === "POST" && request.url === "/api/auth/signup") {
+      signupHandler(request, response);
       return;
     }
 

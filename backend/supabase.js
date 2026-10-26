@@ -41,6 +41,90 @@ function getSupabaseClient(env = process.env) {
   return createClient(config.url, config.key);
 }
 
+function normalizeRegistrationPayload(payload = {}, env = process.env) {
+  const email = String(payload.email ?? "").trim().toLowerCase();
+  const password = String(payload.password ?? "");
+  const isDevEnvironment = env.NODE_ENV !== "production";
+
+  if (!email) {
+    return { ok: false, status: 400, message: "Email is required." };
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, status: 400, message: "Please provide a valid email address." };
+  }
+
+  if (!password) {
+    return { ok: false, status: 400, message: "Password is required." };
+  }
+
+  if (password.length < 6) {
+    return { ok: false, status: 400, message: "Password must be at least 6 characters long." };
+  }
+
+  return {
+    ok: true,
+    data: {
+      email,
+      password,
+      role: isDevEnvironment ? "superadmin" : "user",
+    },
+  };
+}
+
+async function signUpUser(payload, client, env = process.env) {
+  const normalized = normalizeRegistrationPayload(payload, env);
+
+  if (!normalized.ok) {
+    return {
+      ok: false,
+      status: normalized.status,
+      message: normalized.message,
+    };
+  }
+
+  const activeClient = client ?? getSupabaseClient(env);
+
+  try {
+    const { data, error } = await activeClient.auth.signUp({
+      email: normalized.data.email,
+      password: normalized.data.password,
+      options: {
+        data: {
+          role: normalized.data.role,
+        },
+      },
+    });
+
+    if (error) {
+      const duplicateEmail = /already|duplicate|registered/i.test(error.message || "");
+      return {
+        ok: false,
+        status: duplicateEmail ? 409 : 400,
+        message: duplicateEmail ? "Email already registered." : error.message || "Unable to create account.",
+      };
+    }
+
+    const user = data?.user;
+    return {
+      ok: true,
+      status: 201,
+      message: "User registered successfully.",
+      user: {
+        id: user?.id ?? null,
+        email: user?.email ?? normalized.data.email,
+        role: user?.user_metadata?.role ?? normalized.data.role,
+      },
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      status: 503,
+      message: error?.message || "Unable to reach Supabase right now.",
+    };
+  }
+}
+
 async function checkSupabaseConnection(env = process.env, fetchImpl = fetch) {
   const config = getSupabaseConfig(env);
 
@@ -63,4 +147,9 @@ async function checkSupabaseConnection(env = process.env, fetchImpl = fetch) {
   return { status: "connected" };
 }
 
-module.exports = { checkSupabaseConnection, getSupabaseClient };
+module.exports = {
+  checkSupabaseConnection,
+  getSupabaseClient,
+  normalizeRegistrationPayload,
+  signUpUser,
+};

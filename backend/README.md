@@ -35,4 +35,17 @@ Check that the server is running at `GET http://127.0.0.1:3001/api/health`. It r
 
 Check Supabase configuration and connectivity at `GET http://127.0.0.1:3001/api/health/supabase`. It returns `200` when the Supabase REST API is reachable, or `503` if credentials are missing or the connection is unavailable.
 
+## Sign up with email and password
+
+Create a new account with `POST http://127.0.0.1:3001/api/auth/signup` using JSON like:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "secret123"
+}
+```
+
+The endpoint validates email and password input, stores the user in Supabase Auth, and rejects duplicate emails with a clear `409` response. In development, new signups default to the `superadmin` role. Passwords shorter than 6 characters are rejected before the request reaches Supabase.
+
 Run the backend tests from this directory with `npm test`.
