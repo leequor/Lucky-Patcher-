@@ -1,0 +1,18 @@
+{
+  "name": "lucky-patcher-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend API starter for Lucky Patcher",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=20.18.0"
+  }
+}
