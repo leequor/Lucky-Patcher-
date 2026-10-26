@@ -1,1 +1,21 @@
 
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local development files
+.DS_Store
+Thumbs.db
+
