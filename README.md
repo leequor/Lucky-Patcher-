@@ -21,32 +21,47 @@ Database migration files are stored in `supabase/migrations/`. Use the Supabase 
 ## Database Migration Setup
 
 1. Clone the repository and switch to the team's approved development branch.
-2. Install the Supabase CLI by following the official Supabase documentation.
-3. Authenticate with the CLI:
+
+2. Install project dependencies:
 
    ```bash
-   supabase login
+   npm install
+   ```
+
+3. Authenticate with the Supabase CLI:
+
+   ```bash
+   npx supabase login
    ```
 
 4. Link the repository to the correct Supabase project:
 
    ```bash
-   supabase link --project-ref YOUR_PROJECT_REF
+   npx supabase link --project-ref YOUR_PROJECT_REF
    ```
+
+   Replace `YOUR_PROJECT_REF` with the actual project reference provided by the team.
 
 5. Check the migration status:
 
    ```bash
-   supabase migration list
+   npm run db:migration:list
    ```
 
-6. After reviewing the pending migrations and obtaining approval to update the shared database, apply them:
+6. Preview pending migration changes without applying them:
 
    ```bash
-   supabase db push
+   npm run db:migrate:dry-run
    ```
 
-Replace `YOUR_PROJECT_REF` with the actual project reference provided by the team.
+7. After reviewing the pending migrations and obtaining approval to update the shared database, apply them:
+
+   ```bash
+   npm run db:migrate
+   ```
+
+   **Important:** Review migration scripts before applying them. Do not run destructive SQL against the shared database without approval.
+
 
 ## Migration Guidelines
 
