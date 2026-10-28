@@ -1,1 +1,12 @@
 
+{
+  "scripts": {
+    "db:migration:list": "supabase migration list --linked",
+    "db:migrate:dry-run": "supabase db push --linked --dry-run",
+    "db:migrate": "supabase db push --linked"
+  },
+  "devDependencies": {
+    "supabase": "^2.122.0"
+  }
+}
+
