@@ -1,14 +1,15 @@
-# Hope Inc. ERP — Database Setup
+# Hope Inc. ERP
 
 ## Overview
 
-This repository uses Supabase and PostgreSQL for the project's database.
+This repository contains the Hope Inc. ERP base application, built with Next.js App Router, JavaScript, Tailwind CSS, and Supabase.
 
-Database migration files are stored in `supabase/migrations/`. Use the Supabase CLI to track and apply migrations in order.
+The application uses the `app/` directory for pages, layouts, and API routes, and `app/components/` for UI components. Database migration files are stored in `supabase/migrations/`.
 
 ## Prerequisites
 
-- Access to the team's Supabase project
+- Node.js 20.9 or later and npm
+- Access to the team's Supabase project for connection checks and database tasks
 - Supabase CLI installed
 - Git installed
 
@@ -18,23 +19,35 @@ Database migration files are stored in `supabase/migrations/`. Use the Supabase 
 2. Add the correct Supabase project URL and public client key provided by the team.
 3. Never commit real credentials or secret keys.
 
+The application reads `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from the environment. These are public client configuration values; never put a service-role key in the application or repository.
+
+## Run the application locally
+
+Install dependencies and start the development server:
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). The home page checks the Supabase REST API and displays the connection status. The same check is available at `/api/health/supabase`.
+
+To create a production build and run it locally:
+
+```bash
+npm run build
+npm start
+```
+
 ## Database Migration Setup
 
-1. Clone the repository and switch to the team's approved development branch.
-
-2. Install project dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Authenticate with the Supabase CLI:
+1. Authenticate with the Supabase CLI:
 
    ```bash
    npx supabase login
    ```
 
-4. Link the repository to the correct Supabase project:
+2. Link the repository to the correct Supabase project:
 
    ```bash
    npx supabase link --project-ref YOUR_PROJECT_REF
@@ -42,19 +55,19 @@ Database migration files are stored in `supabase/migrations/`. Use the Supabase 
 
    Replace `YOUR_PROJECT_REF` with the actual project reference provided by the team.
 
-5. Check the migration status:
+3. Check the migration status:
 
    ```bash
    npm run db:migration:list
    ```
 
-6. Preview pending migration changes without applying them:
+4. Preview pending migration changes without applying them:
 
    ```bash
    npm run db:migrate:dry-run
    ```
 
-7. After reviewing the pending migrations and obtaining approval to update the shared database, apply them:
+5. After reviewing the pending migrations and obtaining approval to update the shared database, apply them:
 
    ```bash
    npm run db:migrate

@@ -1,11 +1,28 @@
 
 {
+  "name": "hope-inc-erp",
+  "private": true,
+
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "db:migration:list": "supabase migration list --linked",
     "db:migrate:dry-run": "supabase db push --linked --dry-run",
     "db:migrate": "supabase db push --linked"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.0",
+    "postcss": "^8.5.32",
     "supabase": "^2.122.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.32"
   }
 }
