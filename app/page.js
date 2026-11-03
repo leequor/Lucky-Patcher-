@@ -1,4 +1,5 @@
 import SupabaseStatus from "./components/supabase-status";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -22,6 +23,12 @@ export default function HomePage() {
             The app is running. This workspace is ready for features built on
             Next.js, Tailwind CSS, and Supabase.
           </p>
+          <Link
+            className="mt-7 inline-flex rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-200"
+            href="/register"
+          >
+            Create an account
+          </Link>
         </div>
         <SupabaseStatus />
       </section>
