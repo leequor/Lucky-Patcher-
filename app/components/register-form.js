@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import Link from "next/link";
+import { getSupabaseClient } from "./supabase-client";
 
 const minimumPasswordLength = 6;
 
@@ -46,10 +47,9 @@ export default function RegisterForm() {
       return;
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabase = getSupabaseClient();
 
-    if (!supabaseUrl || !supabaseAnonKey) {
+    if (!supabase) {
       setNotice({
         type: "error",
         message: "Registration is not configured. Add the Supabase URL and anon key.",
@@ -60,7 +60,6 @@ export default function RegisterForm() {
     setIsSubmitting(true);
 
     try {
-      const supabase = createClient(supabaseUrl, supabaseAnonKey);
       const { data, error } = await supabase.auth.signUp({ email, password });
 
       if (error) {
@@ -156,6 +155,12 @@ export default function RegisterForm() {
       >
         {isSubmitting ? "Creating account..." : "Create account"}
       </button>
+      <p className="text-center text-sm text-slate-600">
+        Already have an account?{" "}
+        <Link className="font-semibold text-indigo-600 hover:text-indigo-500" href="/login">
+          Sign in
+        </Link>
+      </p>
     </form>
   );
 }

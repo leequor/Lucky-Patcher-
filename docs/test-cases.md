@@ -62,6 +62,20 @@ This file contains detailed test cases with steps and expected results covering 
     3. Click the "Login" button.
 *   **Expected Result:** The application prevents the submission or rejects it safely, showing inline validation messages indicating fields cannot be empty.
 
+### Test Case LOG-04: Successful Logout
+*   **Description:** Verify that a signed-in user can end their session.
+*   **Steps:**
+    1. Sign in with a registered account.
+    2. Click "Sign out" on the landing page.
+*   **Expected Result:** The Supabase Auth session is cleared and the user is returned to the login page.
+
+### Test Case LOG-05: Password Is Not Stored as Plain Text
+*   **Description:** Verify that the application does not store a user's password.
+*   **Steps:**
+    1. Sign in with a registered account.
+    2. Inspect application storage and the browser page after submission.
+*   **Expected Result:** The password is sent to Supabase Auth over the configured connection and is not stored in application storage or displayed as plain text.
+
 ---
 
 *   ## 3. Password Reset
@@ -108,4 +122,3 @@ This file contains detailed test cases with steps and expected results covering 
     2. Navigate back to the main root URL / landing page.
     3. Check navigation bars and core visibility headers.
 *   **Expected Result:** The page reflects an authenticated state. The "Login" and "Register" buttons are hidden or replaced by a profile dropdown, "Go to Dashboard" button, or a "Log Out" option.
-
