@@ -80,6 +80,13 @@ This file contains detailed test cases with steps and expected results covering 
 
 *   ## 3. Password Reset
 
+### Test Case RST-00: Request Reset Email
+*   **Description:** Verify that a user can request a password reset link using their email.
+*   **Steps:**
+    1. Navigate to the Login page and choose "Forgot password?"
+    2. Enter an email address and submit the form.
+*   **Expected Result:** A confirmation message is displayed without revealing whether the email is registered. If the account exists, Supabase sends a reset link that returns to `/reset-password`.
+
 ## Test Case RST-01: Valid Reset Link (Good Input)
 *   **Description:** Verify that a user can successfully update their password using a valid, active reset link.
 *   **Steps:**
