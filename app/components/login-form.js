@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "./supabase-client";
 
@@ -81,6 +82,14 @@ export default function LoginForm() {
           required
           type="password"
         />
+        <div className="mt-2 text-right">
+          <Link
+            className="text-sm font-semibold text-indigo-600 hover:text-indigo-500"
+            href="/forgot-password"
+          >
+            Forgot password?
+          </Link>
+        </div>
       </div>
 
       {errorMessage && (
