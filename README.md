@@ -88,3 +88,10 @@ npm start
 - Do not run destructive SQL against the shared database without approval.
 - Keep database schema creation and sample data in their assigned tasks.
 - Never commit passwords, service-role keys, or other secrets.
+
+## S1-UIX-01
+
+<img width="1920" height="1080" alt="Reset password" src="https://github.com/user-attachments/assets/1d1cd50a-74bd-482e-bfa6-83ac619a2fe5" />
+<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/fa970559-f088-44ba-be6d-c4a15e81db80" />
+<img width="1920" height="1080" alt="Login" src="https://github.com/user-attachments/assets/88798922-15cb-4d79-b356-a981f76bd909" />
+<img width="1920" height="1080" alt="Hope dashboard" src="https://github.com/user-attachments/assets/87ab27fc-5459-4ae5-a950-966884572b88" />
