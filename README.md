@@ -95,3 +95,12 @@ npm start
 <img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/fa970559-f088-44ba-be6d-c4a15e81db80" />
 <img width="1920" height="1080" alt="Login" src="https://github.com/user-attachments/assets/88798922-15cb-4d79-b356-a981f76bd909" />
 <img width="1920" height="1080" alt="Hope dashboard" src="https://github.com/user-attachments/assets/87ab27fc-5459-4ae5-a950-966884572b88" />
+
+## S1-UIX-02
+
+<img width="1920" height="1080" alt="Reset Password" src="https://github.com/user-attachments/assets/7fe81ebb-7d8c-4ba2-b355-b9439e37a5f4" />
+<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/2b7fe3ee-e2b7-43e4-b39d-1ca245f5b40a" />
+<img width="1920" height="1080" alt="Log In" src="https://github.com/user-attachments/assets/9393acef-1f77-43a2-890d-75d2f4b4c860" />
+<img width="1920" height="1080" alt="DashBoard" src="https://github.com/user-attachments/assets/339340b7-afde-4091-82bc-7a7d3ead4683" />
+
+
