@@ -19,7 +19,7 @@ This document defines the test plan and pass/fail criteria for Sprint 1 core fea
 ## 2. User Registration
 
 ### Test Case 2.1: Successful Account Creation
-* **Action:** Fill out the registration form with a valid email, unique username, and matching strong passwords, then click "Submit".
+* **Action:** Fill out the registration form with a valid email and matching strong passwords, then click "Submit".
 * **Pass Criteria:** 
   * The user account is successfully created in the database.
   * A success message is displayed or the user is automatically redirected to the dashboard/landing page.
@@ -52,7 +52,7 @@ This document defines the test plan and pass/fail criteria for Sprint 1 core fea
 * **Action:** Enter an incorrect password or an unregistered email address and click "Login".
 * **Pass Criteria:** 
   * Authentication is denied.
-  * An explicit error message is displayed (e.g., *"Invalid username or password"*).
+  * An explicit error message is displayed (e.g., *"Invalid email or password"*).
 * **Fail Criteria:** The user gains unauthorized access, or the application displays a raw code error stack.
 
 ---

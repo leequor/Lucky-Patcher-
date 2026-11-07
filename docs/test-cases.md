@@ -11,9 +11,8 @@ This file contains detailed test cases with steps and expected results covering 
 * **Steps:**
   1. Navigate to the Registration page.
   2. Enter a unique, valid email address (e.g., `student@example.com`).
-  3. Enter a unique username (e.g., `testuser123`).
-  4. Enter a valid password and re-enter the exact same password in the confirmation field.
-  5. Click the "Submit" or "Register" button.
+  3. Enter a valid password and re-enter the exact same password in the confirmation field.
+  4. Click the "Submit" or "Register" button.
 * **Expected Result:** The account is created successfully. The user is either redirected to the login/dashboard screen or shown a clear success message.
 
 ---
@@ -23,7 +22,7 @@ This file contains detailed test cases with steps and expected results covering 
 * **Steps:**
   1. Navigate to the Registration page.
   2. Enter an email address that has already been registered in the system.
-  3. Fill out the username and matching valid passwords.
+  3. Fill out the password fields.
   4. Click the "Submit" or "Register" button.
 * **Expected Result:** Registration is blocked. An error message appears stating that the email is already registered.
 
@@ -33,7 +32,7 @@ This file contains detailed test cases with steps and expected results covering 
 * **Description:** Verify that the system prevents submission when required information is missing.
 * **Steps:**
   1. Navigate to the Registration page.
-  2. Leave one or all required fields (Email, Username, Password) blank.
+  2. Leave one or all required fields (Email, Password) blank.
   3. Click the "Submit" or "Register" button.
 * **Expected Result:** Registration is blocked. Form validation tags or error messages appear next to the empty fields indicating they are required.
 
@@ -45,7 +44,7 @@ This file contains detailed test cases with steps and expected results covering 
 * **Description:** Verify that a registered user can log into their account with valid credentials.
 * **Steps:**
   1. Navigate to the Login page.
-  2. Enter the valid registered email (or username) and the correct password.
+  2. Enter the valid registered email and the correct password.
   3. Click the "Login" button.
 * **Expected Result:** Access is granted. The user is redirected to the main application dashboard or home page, and a secure session is initiated.
 
@@ -55,7 +54,7 @@ This file contains detailed test cases with steps and expected results covering 
 * **Description:** Verify that the system denies access if an incorrect password is provided.
 * **Steps:**
   1. Navigate to the Login page.
-  2. Enter a valid registered email or username.
+  2. Enter a valid registered email.
   3. Enter an incorrect password.
   4. Click the "Login" button.
 * **Expected Result:** Access is denied. The user remains on the login page and receives an error message (e.g., *"Invalid email or password"*).
