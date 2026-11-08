@@ -14,14 +14,21 @@
 
 This report documents the baseline test execution for Sprint 1 core features, covering User Registration, Authentication (Login/Logout), Password Reset, Security verification, and Landing Page views.
 
-All 14 test cases have been verified through both **manual execution** and the **automated unit test suite** (`npm test`).
+Testing was split into two distinct execution layers: an automated unit test suite (`npm test`) and a manual End-to-End (E2E) functional validation.
 
+### 🧪 Automated Unit Tests
 * **Total Test Cases:** 14
 * **Passed:** 14 (100%)
 * **Failed:** 0
-* **Bugs Reported:** 0
-* **Automated Test Command:** `npm test` (Runs `tests/auth-validation.test.mjs` - 14 passing unit tests in <80ms)
-* **Sprint Readiness:** Core authentication, password management, and database role connections are operational. Baseline testing criteria are satisfied.
+* **Automated Test Command:** `npm test` (Runs `tests/auth-validation-unit.test.mjs` - 14 passing unit tests in <80ms)
+* **Status:** **PASSED** — Programmatic logic, authentication validations, and database rules function flawlessly in isolation.
+
+### 👥 Manual End-to-End (E2E) Tests
+* **Total Test Cases:** 14
+* **Passed:** 13
+* **Failed:** 1 (`LOG-04`)
+* **Bugs Reported:** 1 (Tracked under Issue #41)
+* **Status:** **FAILED (13/14)** — A user experience flow defect was uncovered during full UI interaction testing.
 
 ---
 
@@ -55,17 +62,19 @@ All 14 test cases have been verified through both **manual execution** and the *
 
   * Feature Scope: User Registration, Login, Logout, Password Reset, Landing Views
   * Execution Date: November 2026
-  * Testing Methods: Manual E2E Testing & Automated Unit Test Suite (`npm test`)
-  * Overall Result: 14 / 14 Test Cases Passed (100% Pass Rate)
+  * Testing Methods: Manual E2E UI Testing & Automated Unit Test Suite
+  * Overall Result: FAILED — 13 / 14 E2E Manual Test Cases Passed
 
-  Key Achievements:
-  - Robust Authentication: Registration and sign-in fully operational via Supabase.
-  - Automated Unit Testing: 14 automated tests executing in under 80ms.
-  - Form & Input Validation: Duplicate emails, invalid passwords, and empty inputs handled gracefully.
-  - End-to-End Password Recovery: Email dispatch, rate limiting, and single-use token checks verified.
-  - Security Standards: Passwords never stored in plain text; RLS policies enforced.
-  - Session Lifecycle: Secure session generation, validation, and termination on logout.
+  Key Breakdown:
+  ✔ Automated Suite: 100% Pass Rate (14/14 unit tests green in <80ms).
+  ✔ Core Features: Registration, sign-in, and recovery functional via Supabase.
+  ✔ Security Checks: Form inputs validated; data hidden over plaintext lines.
+  ✘ UI Regression: 1 Manual E2E Failure uncovered during workflow analysis.
 
-  Status: All Sprint 1 acceptance criteria met. Ready for Sprint 2 module development.
+  Identified Defect:
+  - LOG-04 (User Logout): The backend session destroys properly, but the UI 
+    fails to redirect the user back to the `/login` route. User stuck on page.
+
+  Status: Action required. Patch for LOG-04 is mandatory before final release.
 ======================================================================
 ```
