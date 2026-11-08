@@ -1,4 +1,4 @@
-# Hope Inc. ERP
+<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/affea431-8049-4ad6-8d93-b0f0e971f147" /># Hope Inc. ERP
 
 ## Overview
 
@@ -91,16 +91,94 @@ npm start
 
 ## S1-UIX-01
 
-<img width="1920" height="1080" alt="Reset password" src="https://github.com/user-attachments/assets/1d1cd50a-74bd-482e-bfa6-83ac619a2fe5" />
-<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/fa970559-f088-44ba-be6d-c4a15e81db80" />
-<img width="1920" height="1080" alt="Login" src="https://github.com/user-attachments/assets/88798922-15cb-4d79-b356-a981f76bd909" />
-<img width="1920" height="1080" alt="Hope dashboard" src="https://github.com/user-attachments/assets/87ab27fc-5459-4ae5-a950-966884572b88" />
+Top Header Banner:
+Background: #000000 (Black)
+Logo Icon: #FFFFFF (White square with "H")
+App Name ("Hope, Inc. ERP"): Font: Inter, Weight: Semi-Bold (600), Color: #FFFFFF
+Main Headline ("Run your entire business with confidence"):
+Font: Inter, Weight: Bold (700), Color: #000000
+Description Paragraph:
+Font: Inter, Weight: Regular (400), Color: #71717A (Muted Gray)
+"Sign In" Button:
+Background: #F3F3F3
+Text: Font: Inter, Weight: Semi-Bold (600), Color: #000000
+Radius: 14px, with subtle drop shadow
+Divider Text ("or"):
+Font: Inter, Weight: Medium (500), Color: #000000
+"Register" Button:
+Background: #F3F3F3
+Text: Font: Inter, Weight: Semi-Bold (600), Color: #000000
+Radius: 14px, with subtle drop shadow
+
+Screen 2: Login — "Welcome Back" (Group 81.png)
+Title ("Welcome Back"):
+Font: Inter, Weight: Bold (700), Color: #000000
+Subtitle ("Login to your Hope, Inc. ERP account"):
+Font: Inter, Weight: Regular (400), Color: #808080
+Field Labels ("Emails", "Password"):
+Font: Inter, Weight: Semi-Bold (600), Color: #000000
+"Forgot your password?" Link:
+Font: Inter, Weight: Semi-Bold (600), Color: #000000
+Input Fields (Email & Password boxes):
+Background: #F3F3F3 (Soft Gray)
+Border: None
+Radius: 14px
+Primary Button ("Login"):
+Background: #000000 (Black)
+Text: Font: Inter, Weight: Semi-Bold (600), Color: #FFFFFF
+Radius: 14px
+Divider ("or continue with"):
+Lines: #E5E7EB or #000000
+Text: Font: Inter, Weight: Medium (500), Color: #000000
+Social Auth Buttons (3 rounded boxes):
+Background: #F3F3F3, Radius: 12px
+Footer ("Don't have an account? Sign up"):
+Font: Inter, Weight: Semi-Bold (600), Color: #000000
+
+Screen 3: Register — "Create an Account" (Group 83.png)
+Title ("Create an Account"):
+Font: Inter, Weight: Bold (700), Color: #000000
+Subtitle:
+Font: Inter, Weight: Regular (400), Color: #808080
+Labels ("Full Name", "Email", "Password", "Confirm Password"):
+Font: Inter, Weight: Semi-Bold (600), Color: #000000
+Input Fields (4 boxes):
+Background: #F3F3F3, Radius: 14px
+Primary Button ("Create Account"):
+Background: #000000, Text: #FFFFFF (Font: Inter, Weight: 600), Radius: 14px
+Social Auth & Divider:
+Same as Login (#F3F3F3 containers)
+Footer ("Already have an account? Log in"):
+Font: Inter, Weight: Semi-Bold (600), Color: #000000
+
+Screen 4: Password Reset (Group 80.png)
+Title ("Reset your Password"):
+Font: Inter, Weight: Bold (700), Color: #000000
+Subtitle ("We'll email you a link to reset it"):
+Font: Inter, Weight: Regular (400), Color: #808080
+Labels ("Name", "Email"):
+Font: Inter, Weight: Semi-Bold (600), Color: #000000
+Input Fields:
+Background: #F3F3F3, Radius: 14px
+Primary Button ("Send reset link"):
+Background: #000000, Text: #FFFFFF (Font: Inter, Weight: 600), Radius: 14px
+Footer Link ("Remembered it? Back to log in"):
+Font: Inter, Weight: Semi-Bold (600), Color: #000000
 
 ## S1-UIX-02
 
-<img width="1920" height="1080" alt="Reset Password" src="https://github.com/user-attachments/assets/7fe81ebb-7d8c-4ba2-b355-b9439e37a5f4" />
-<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/2b7fe3ee-e2b7-43e4-b39d-1ca245f5b40a" />
-<img width="1920" height="1080" alt="Log In" src="https://github.com/user-attachments/assets/9393acef-1f77-43a2-890d-75d2f4b4c860" />
-<img width="1920" height="1080" alt="DashBoard" src="https://github.com/user-attachments/assets/339340b7-afde-4091-82bc-7a7d3ead4683" />
+<img width="1920" height="1080" alt="Page" src="https://github.com/user-attachments/assets/6d9c876a-9e3d-4f2e-b974-8a4f6064382d" />
+<img width="1920" height="1080" alt="Log In" src="https://github.com/user-attachments/assets/a4053269-72d5-4677-9ac4-d560cb84a195" />
+<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/126c29e8-53f5-4625-bdaf-1aa261c92216" />
+<img width="1920" height="1080" alt="Reset Password" src="https://github.com/user-attachments/assets/0f9bdbc0-259a-4153-88fd-da64162514c6" />
+
+## S1-UIX-03, S1-UIX-04
+
+<img width="1920" height="1080" alt="Homepage UI" src="https://github.com/user-attachments/assets/1f560a95-c44f-45af-bc91-4874b95295a7" />
+<img width="1920" height="1080" alt="Log In UI" src="https://github.com/user-attachments/assets/12dc02b5-28a8-4965-a918-5d6020b7799c" />
+<img width="1920" height="1080" alt="Register UI" src="https://github.com/user-attachments/assets/082de783-69f8-4339-9499-faa8401fd2f6" />
+<img width="1920" height="1080" alt="Reset Password UI" src="https://github.com/user-attachments/assets/24db7974-a386-40c6-b237-b96a4abd18a1" />
+
+
 
 
