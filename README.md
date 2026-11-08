@@ -90,79 +90,56 @@ npm start
 
 ## S1-UIX-01
 
-Top Header Banner:
-Background: #000000 (Black)
-Logo Icon: #FFFFFF (White square with "H")
-App Name ("Hope, Inc. ERP"): Font: Inter, Weight: Semi-Bold (600), Color: #FFFFFF
-Main Headline ("Run your entire business with confidence"):
-Font: Inter, Weight: Bold (700), Color: #000000
-Description Paragraph:
-Font: Inter, Weight: Regular (400), Color: #71717A (Muted Gray)
-"Sign In" Button:
-Background: #F3F3F3
-Text: Font: Inter, Weight: Semi-Bold (600), Color: #000000
-Radius: 14px, with subtle drop shadow
-Divider Text ("or"):
-Font: Inter, Weight: Medium (500), Color: #000000
-"Register" Button:
-Background: #F3F3F3
-Text: Font: Inter, Weight: Semi-Bold (600), Color: #000000
-Radius: 14px, with subtle drop shadow
+## S1-UIX-01: UI Specifications & Design Tokens
 
-Screen 2: Login — "Welcome Back" (Group 81.png)
-Title ("Welcome Back"):
-Font: Inter, Weight: Bold (700), Color: #000000
-Subtitle ("Login to your Hope, Inc. ERP account"):
-Font: Inter, Weight: Regular (400), Color: #808080
-Field Labels ("Emails", "Password"):
-Font: Inter, Weight: Semi-Bold (600), Color: #000000
-"Forgot your password?" Link:
-Font: Inter, Weight: Semi-Bold (600), Color: #000000
-Input Fields (Email & Password boxes):
-Background: #F3F3F3 (Soft Gray)
-Border: None
-Radius: 14px
-Primary Button ("Login"):
-Background: #000000 (Black)
-Text: Font: Inter, Weight: Semi-Bold (600), Color: #FFFFFF
-Radius: 14px
-Divider ("or continue with"):
-Lines: #E5E7EB or #000000
-Text: Font: Inter, Weight: Medium (500), Color: #000000
-Social Auth Buttons (3 rounded boxes):
-Background: #F3F3F3, Radius: 12px
-Footer ("Don't have an account? Sign up"):
-Font: Inter, Weight: Semi-Bold (600), Color: #000000
+### Global Styling
+- **Font Family:** Inter, sans-serif
+- **Modal Surface:** #FFFFFF (White)
+- **Primary Buttons / Dark:** #000000 (Black)
+- **Input Fields & Secondary Buttons:** #F3F3F3 (Light Gray)
+- **Corner Radius:** 24px (Card) / 14px (Inputs & Buttons)
 
-Screen 3: Register — "Create an Account" (Group 83.png)
-Title ("Create an Account"):
-Font: Inter, Weight: Bold (700), Color: #000000
-Subtitle:
-Font: Inter, Weight: Regular (400), Color: #808080
-Labels ("Full Name", "Email", "Password", "Confirm Password"):
-Font: Inter, Weight: Semi-Bold (600), Color: #000000
-Input Fields (4 boxes):
-Background: #F3F3F3, Radius: 14px
-Primary Button ("Create Account"):
-Background: #000000, Text: #FFFFFF (Font: Inter, Weight: 600), Radius: 14px
-Social Auth & Divider:
-Same as Login (#F3F3F3 containers)
-Footer ("Already have an account? Log in"):
-Font: Inter, Weight: Semi-Bold (600), Color: #000000
+---
 
-Screen 4: Password Reset (Group 80.png)
-Title ("Reset your Password"):
-Font: Inter, Weight: Bold (700), Color: #000000
-Subtitle ("We'll email you a link to reset it"):
-Font: Inter, Weight: Regular (400), Color: #808080
-Labels ("Name", "Email"):
-Font: Inter, Weight: Semi-Bold (600), Color: #000000
-Input Fields:
-Background: #F3F3F3, Radius: 14px
-Primary Button ("Send reset link"):
-Background: #000000, Text: #FFFFFF (Font: Inter, Weight: 600), Radius: 14px
-Footer Link ("Remembered it? Back to log in"):
-Font: Inter, Weight: Semi-Bold (600), Color: #000000
+### Screen 1: Welcome & Landing (Hope, Inc. ERP)
+- **Top Header Banner:** Background `#000000`, Logo `#FFFFFF`, App Name `Hope, Inc. ERP` (Inter, Semi-Bold, `#FFFFFF`)
+- **Main Headline:** "Run your entire business with confidence" (Inter, Bold 700, `#000000`)
+- **Description:** "Hope, Inc. ERP unifies Customer Management..." (Inter, Regular 400, `#71717A`)
+- **"Sign In" Button:** Background `#F3F3F3`, Text: "Sign In" (Inter, Semi-Bold 600, `#000000`), Radius: 14px
+- **Divider:** "or" (Inter, Medium 500, `#000000`)
+- **"Register" Button:** Background `#F3F3F3`, Text: "Register" (Inter, Semi-Bold 600, `#000000`), Radius: 14px
+
+---
+
+### Screen 2: Login — "Welcome Back"
+- **Title:** "Welcome Back" (Inter, Bold 700, `#000000`)
+- **Subtitle:** "Login to your Hope, Inc. ERP account" (Inter, Regular 400, `#808080`)
+- **Field Labels:** "Emails", "Password" (Inter, Semi-Bold 600, `#000000`)
+- **Forgot Password Link:** "Forgot your password?" (Inter, Semi-Bold 600, `#000000`)
+- **Input Fields:** Background `#F3F3F3`, Radius: 14px, Border: None
+- **Primary Button:** "Login" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
+- **Social Login:** 3 buttons with `#F3F3F3` background
+- **Footer:** "Don't have an account? Sign up" (Inter, Semi-Bold 600, `#000000`)
+
+---
+
+### Screen 3: Register — "Create an Account"
+- **Title:** "Create an Account" (Inter, Bold 700, `#000000`)
+- **Subtitle:** "Sign up to your Hope, Inc. ERP account" (Inter, Regular 400, `#808080`)
+- **Field Labels:** "Full Name", "Email", "Password", "Confirm Password" (Inter, Semi-Bold 600, `#000000`)
+- **Input Fields:** Background `#F3F3F3`, Radius: 14px
+- **Primary Button:** "Create Account" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
+- **Footer:** "Already have an account? Log in" (Inter, Semi-Bold 600, `#000000`)
+
+---
+
+### Screen 4: Password Reset — "Reset your Password"
+- **Title:** "Reset your Password" (Inter, Bold 700, `#000000`)
+- **Subtitle:** "We'll email you a link to reset it" (Inter, Regular 400, `#808080`)
+- **Field Labels:** "Name", "Email" (Inter, Semi-Bold 600, `#000000`)
+- **Input Fields:** Background `#F3F3F3`, Radius: 14px
+- **Primary Button:** "Send reset link" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
+- **Footer:** "Remembered it? Back to log in" (Inter, Semi-Bold 600, `#000000`)
 
 ## S1-UIX-02
 
