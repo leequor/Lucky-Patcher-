@@ -1,4 +1,3 @@
-<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/affea431-8049-4ad6-8d93-b0f0e971f147" /># Hope Inc. ERP
 
 ## Overview
 
