@@ -1,8 +1,6 @@
-
 {
   "name": "hope-inc-erp",
   "private": true,
-
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
     "next": "^15.5.0",
@@ -13,6 +11,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "node --test",
     "db:migration:list": "supabase migration list --linked",
     "db:migrate:dry-run": "supabase db push --linked --dry-run",
     "db:migrate": "supabase db push --linked"
