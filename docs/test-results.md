@@ -16,14 +16,14 @@ This report documents the baseline test execution for Sprint 1 core features, co
 
 Testing was split into two distinct execution layers: an automated unit test suite (`npm test`) and a manual End-to-End (E2E) functional validation.
 
-### 🧪 Automated Unit Tests
+###  Automated Unit Tests
 * **Total Test Cases:** 14
 * **Passed:** 14 (100%)
 * **Failed:** 0
 * **Automated Test Command:** `npm test` (Runs `tests/auth-validation-unit.test.mjs` - 14 passing unit tests in <80ms)
 * **Status:** **PASSED** — Programmatic logic, authentication validations, and database rules function flawlessly in isolation.
 
-### 👥 Manual End-to-End (E2E) Tests
+###  Manual End-to-End (E2E) Tests
 * **Total Test Cases:** 14
 * **Passed:** 13
 * **Failed:** 1 (`LOG-04`)
