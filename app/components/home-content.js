@@ -93,8 +93,15 @@ export default function HomeContent() {
         return;
       }
 
+      setSession(null);
+      setIsLoading(false);
+
       router.replace("/login");
       router.refresh();
+
+      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+        window.location.assign("/login");
+      }
     } catch {
       setAuthError("We couldn't reach Supabase. Check your connection and try again.");
     } finally {

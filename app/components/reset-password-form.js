@@ -139,6 +139,10 @@ export default function ResetPasswordForm() {
         return;
       }
 
+      if (typeof window !== "undefined") {
+        window.location.assign("/login");
+      }
+
       router.replace("/login");
       router.refresh();
     } catch {
