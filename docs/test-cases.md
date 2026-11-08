@@ -76,7 +76,7 @@ This file contains detailed test cases with steps and expected results covering 
 * **Steps:**
   1. Sign in with a registered account.
   2. Click "Sign out" on the landing page.
-* **Expected Result:** The Supabase Auth session is cleared and the user is returned to the login page.
+* **Expected Result:** The Supabase Auth session is cleared and the user is redirected to the login page. **Current behavior:** Session cleared but no redirect (FAIL).
 
 ---
 
@@ -131,20 +131,19 @@ This file contains detailed test cases with steps and expected results covering 
 
 ## 4. Main Landing Page
 
-### Test Case LND-01: Landing Page - Logged Out (Public View)
-* **Description:** Verify the content and navigation options available to anonymous visitors.
-* **Steps:**
-  1. Ensure no user session is active (logged out).
-  2. Navigate to the main application root URL / landing page.
-  3. Verify visible layout components and navigation bars.
-* **Expected Result:** The public landing page loads properly. Marketing content, "Login", and "Register" buttons are clearly visible. Dashboard or account-specific routes are not displayed.
+### Test Case LND-01: Public Landing Page (Logged Out)
+- **Goal:** Verify an unauthenticated visitor sees the branding and Login/Register links.
+- **Steps:**
+  1. Open the root URL `/` with no active session.
+  2. Observe the page.
+- **Expected:** Branding displayed, and **Login** and **Register** buttons are visible; no dashboard or user‑specific links.
 
 ---
 
-### Test Case LND-02: Landing Page - Logged In (Authenticated View)
-* **Description:** Verify how the landing page behaves or adapts when a user accesses it with an active session.
-* **Steps:**
-  1. Log into the application successfully to establish a valid session.
-  2. Navigate back to the main root URL / landing page.
-  3. Check navigation bars and core visibility headers.
-* **Expected Result:** The page reflects an authenticated state. The "Login" and "Register" buttons are hidden or replaced by a profile dropdown, "Go to Dashboard" button, or a "Log Out" option.
+### Test Case LND-02: Authenticated Landing Page (Logged In)
+- **Goal:** Verify a logged‑in user sees their profile/email and a Logout option.
+- **Steps:**
+  1. Log in with a valid account.
+  2. Open the root URL `/`.
+- **Expected:** User email/profile shown, **Logout** button present, and **Login**/**Register** are hidden.
+

@@ -6,7 +6,7 @@
 **Tester:** Jaymark De Guzman  
 **Date Tested:** November 2026  
 **Environment:** Next.js (Localhost:3000), Supabase Cloud Auth & Database  
-**Overall Status:** **PASSED (14/14)**
+**Overall Status:** **FAILED (13/14)**
 
 ---
 
@@ -35,7 +35,7 @@ All 14 test cases have been verified through both **manual execution** and the *
 | **LOG-01** | Authentication | Successful User Login (Good Input) | Valid registered credentials authenticate successfully and redirect user to `/` with an active session. | Credentials authenticated against Supabase; redirected to `/` with active session and email visible. | **PASS** | Verified manually & via automated test `LOG-01` |
 | **LOG-02** | Authentication | Invalid Password (Bad Input) | Access denied when incorrect password is provided; displays user-friendly error message. | Access denied; error message displayed: *"Invalid email or password. Please try again."* | **PASS** | Verified manually & via automated test `LOG-02` |
 | **LOG-03** | Authentication | Empty Login Fields (Bad Input) | Form prevents submission when credentials are missing. | Form submission is prevented by required field validation prompts. | **PASS** | Verified manually & via automated test `LOG-03` |
-| **LOG-04** | Authentication | User Logout | Clicking "Logout" destroys active Supabase session and returns user to `/login`. | Supabase session token is destroyed and user is returned to the login page. | **PASS** | Verified manually & via automated test `LOG-04` |
+| **LOG-04** | Authentication | User Logout | Clicking "Logout" destroys active Supabase session and returns user to `/login`. | Supabase session token is destroyed but no redirect occurs (user remains on current page). | **FAIL** | Verified manually; automated test only checks session cleared (PASS) |
 | **LOG-05** | Security | Password Not Stored in Plain Text | User passwords are submitted securely over connection and never stored in plain text or browser storage. | Browser inspection (Local Storage / Session Storage) confirms only tokens are retained; raw password is never stored or exposed. | **PASS** | Verified via DevTools & automated test `LOG-05` |
 | **RST-00** | Password Reset | Request Reset Email | User requests reset on `/forgot-password`; generic confirmation displayed without exposing user existence. | Confirmation displayed: *"If an account exists for this email, password reset instructions have been sent."* | **PASS** | Verified manually & via automated test `RST-00` |
 | **RST-01** | Password Reset | Setting New Password via Valid Reset Link | User follows verification email link, submits matching new password, redirected to login. | Password updated successfully in Supabase; user redirected to `/login` and can authenticate with new password. | **PASS** | Verified manually & via automated test `RST-01` |
