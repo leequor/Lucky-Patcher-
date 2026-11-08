@@ -89,9 +89,6 @@ npm start
 - Never commit passwords, service-role keys, or other secrets.
 
 ## S1-UIX-01
-
-## S1-UIX-01: UI Specifications & Design Tokens
-
 ### Global Styling
 - **Font Family:** Inter, sans-serif
 - **Modal Surface:** #FFFFFF (White)
