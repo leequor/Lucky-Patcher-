@@ -28,3 +28,6 @@ supabase/.temp/
 *.genie
 .workbuddy/
 /*.png
+
+# Local agent memory
+.workbuddy-ai/
