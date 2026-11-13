@@ -1,0 +1,53 @@
+# Test Cases: Customer Module (S2-TST-01)
+
+**Plan ID:** S2-TST-01  
+**Module:** Customer Module  
+**Scope:** Functional deployment verification (List, Search, Filter, Add, Edit, Validation Errors, Duplicate Code)  
+
+---
+
+## 1. Customer List & Navigation
+| Test Case ID | Scenario / Description | Pre-conditions | Test Steps | Expected Result | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-CUS-01** | Verify customer list loads successfully on deployment | User is logged in with valid credentials | 1. Navigate to the main dashboard.<br>2. Click on the "Customers" menu item. | Customer list page loads successfully, displaying existing customer records in a table/grid. | [ ] Pass / [ ] Fail |
+
+## 2. Search & Filtering
+| Test Case ID | Scenario / Description | Pre-conditions | Test Steps | Expected Result | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-CUS-02** | Search for an existing customer by name/code | Customer records exist in the system | 1. Navigate to the Customer module.<br>2. Enter a valid customer name or code in the search bar.<br>3. Press Enter or click Search. | The list updates to display only records matching the search query. | [ ] Pass / [ ] Fail |
+| **TC-CUS-03** | Filter customer list by status or category | Customer records with varied statuses exist | 1. Navigate to the Customer module.<br>2. Select a specific filter option (e.g., Active/Inactive).<br>3. Apply the filter. | The list displays only the records matching the selected filter criteria. | [ ] Pass / [ ] Fail |
+
+## 3. Add Customer
+| Test Case ID | Scenario / Description | Pre-conditions | Test Steps | Expected Result | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-CUS-04** | Successfully add a new customer with valid data | User is on the Customer module page | 1. Click the "Add Customer" button.<br>2. Fill in all required fields (e.g., Customer Code, Name, Email, Contact) with valid, unique data.<br>3. Click "Save" or "Submit". | Customer is successfully created, a success message appears, and the new customer is visible in the list. | [ ] Pass / [ ] Fail |
+| **TC-CUS-05** | Trigger validation errors on missing required fields | User is on the "Add Customer" form | 1. Leave mandatory fields (Name, Customer Code) blank.<br>2. Click "Save" or "Submit". | Form submission is blocked, and clear inline validation error messages are displayed for the required fields. | [ ] Pass / [ ] Fail |
+| **TC-CUS-06** | Handle duplicate customer code error | A customer with Code "CUST-001" already exists | 1. Click "Add Customer".<br>2. Enter "CUST-001" into the Customer Code field along with other valid details.<br>3. Click "Save". | System blocks creation and displays a duplicate code error message indicating the code already exists. | [ ] Pass / [ ] Fail |
+
+## 4. Edit Customer
+| Test Case ID | Scenario / Description | Pre-conditions | Test Steps | Expected Result | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-CUS-07** | Successfully update existing customer details | At least one customer record exists | 1. Select a customer from the list and click "Edit".<br>2. Modify editable fields (e.g., Phone Number, Address).<br>3. Click "Save Changes". | Customer details are updated successfully, changes are reflected in the view, and a success message appears. | [ ] Pass / [ ] Fail |
+| **TC-CUS-08** | Edit validation error handling | User is editing an existing customer | 1. Clear out a mandatory field (e.g., Customer Name).<br>2. Click "Save Changes". | Update is prevented, and validation errors are shown prompting for required data. | [ ] Pass / [ ] Fail |
+
+## 5. Product List, Search, & Filtering (S2-TST-02)
+| Test Case ID | Scenario / Description | Pre-conditions | Test Steps | Expected Result | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-09** | Verify product list loads successfully | User is logged in with valid credentials | 1. Navigate to the main dashboard.<br>2. Click on the "Products" menu. | Product list page loads and displays existing product records properly. | [ ] Pass / [ ] Fail |
+| **TC-10** | Search for a product by code or name | Product records exist in the system | 1. Navigate to the Product module.<br>2. Enter a product name or SKU in the search bar.<br>3. Submit the search. | Product list filters to display only matching product records. | [ ] Pass / [ ] Fail |
+| **TC-11** | Filter product list by category/status | Products with categories/statuses exist | 1. Navigate to the Product module.<br>2. Select a filter option (e.g., Category).<br>3. Apply the filter. | Product list updates to display only items within the selected category. | [ ] Pass / [ ] Fail |
+
+## 6. Product Add, Edit, & Validation (S2-TST-02)
+| Test Case ID | Scenario / Description | Pre-conditions | Test Steps | Expected Result | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-12** | Successfully add a new product with valid data | User is on the Product module page | 1. Click "Add Product".<br>2. Fill in required fields (SKU, Name, Base Price) with valid data.<br>3. Click "Save". | Product is created successfully, a success message appears, and the item displays in the product list. | [ ] Pass / [ ] Fail |
+| **TC-13** | Trigger validation errors on missing product fields | User is on the "Add Product" form | 1. Leave required fields blank.<br>2. Click "Save". | Form submission is blocked, and inline validation error messages are displayed. | [ ] Pass / [ ] Fail |
+| **TC-14** | Successfully update existing product details | At least one product record exists | 1. Select a product and click "Edit".<br>2. Modify product attributes (e.g., Description).<br>3. Click "Save Changes". | Product information is successfully updated and reflected on the screen. | [ ] Pass / [ ] Fail |
+
+## 7. Price History: Add, Edit, Delete, & Effective Date Rejection (S2-TST-02)
+| Test Case ID | Scenario / Description | Pre-conditions | Test Steps | Expected Result | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-15** | Successfully add a dated price row for a product | A product record exists | 1. Open product details/price history view.<br>2. Click "Add Price".<br>3. Enter a valid price amount and a unique effective start date.<br>4. Click "Save". | New dated price entry is added successfully to the price history table. | [ ] Pass / [ ] Fail |
+| **TC-16** | Reject duplicate or overlapping effective dates | A price entry with an effective date range already exists | 1. Click "Add Price" (or edit an existing price).<br>2. Enter an effective date that overlaps with an existing active price history range for that product.<br>3. Click "Save". | System blocks the entry and displays an error message rejecting the overlapping/duplicate effective date. | [ ] Pass / [ ] Fail |
+| **TC-17** | Successfully edit an existing price row entry | A price history entry exists | 1. Select an existing price row and click "Edit".<br>2. Update the price amount or non-conflicting date.<br>3. Click "Save". | Price history row is successfully updated with the new values. | [ ] Pass / [ ] Fail |
+| **TC-18** | Successfully delete a price history entry | Multiple price history entries exist | 1. Select an outdated price history row.<br>2. Click "Delete" and confirm the action. | The price row is removed successfully from the product's price history list. | [ ] Pass / [ ] Fail |
