@@ -1,89 +1,145 @@
-# Sprint 2 Test Plan: Per-Right Permission Tests (S2-TST-04)
+# Customer Module Test Cases (S2-TST-01)
 
-This document defines the test cases and pass/fail criteria for verifying Role-Based Access Control (RBAC) and per-action permissions across **Customer** and **Product** modules (Add, Edit, Delete, and Price Rights)[cite: 1].
-
----
-
-## Test Prerequisites & Methodology
-- **Test Accounts:** Prepare test accounts representing distinct permission levels (e.g., *Admin/Full Access*, *Standard Staff/Limited Rights*, and *Read-Only/No Rights*).
-- **Two-Layer Verification:** Each permission must be tested at both the **UI layer** (menus, buttons, and input fields) and the **Server/API layer** (direct URL navigation or HTTP requests) to ensure unauthorized actions cannot be bypassed[cite: 1].
+This file contains detailed test cases with steps, expected results, and proper testing methodologies (Equivalence Partitioning, Boundary Value Analysis, and Positive/Negative testing) covering the Customer module[cite: 3].
 
 ---
 
-## 1. Permission Matrix (Reference)
+## Test Execution Summary (Pass/Fail Tracking)
 
-Use this matrix to track execution results per right across roles[cite: 1]:
-
-| Module | Permission Right | Full Access Role | Limited Role | Read-Only Role | Status (Pass/Fail) |
-| :--- | :--- | :---: | :---: | :---: | :---: |
-| **Customer** | Add Customer | Allowed | Denied | Denied | [ ] |
-| **Customer** | Edit Customer | Allowed | Allowed | Denied | [ ] |
-| **Customer** | Delete Customer | Allowed | Denied | Denied | [ ] |
-| **Product** | Add Product | Allowed | Denied | Denied | [ ] |
-| **Product** | Edit Product (Details) | Allowed | Allowed | Denied | [ ] |
-| **Product** | Edit Product Price | Allowed | Denied | Denied | [ ] |
-| **Product** | Delete Product | Allowed | Denied | Denied | [ ] |
-
-*(Note: Adjust the "Allowed/Denied" baseline above to match your specific project role definitions before running the tests.)*
-
----
-
-## 2. Customer Module Permissions
-
-### Test Case 2.1: Customer Add Permission (UI & Server)
-- **Action:** 
-  1. Log in as a user **with** the *Add Customer* right and attempt to create a new customer record.
-  2. Log in as a user **without** the *Add Customer* right, inspect the Customer screen, and attempt to access the "Add Customer" URL or send a `POST` request directly.
-- **Pass Criteria:** 
-  * Authorized user sees the "Add Customer" button/menu and successfully saves a new record[cite: 1].
-  * Unauthorized user does not see the "Add Customer" button in the UI[cite: 1].
-  * Direct URL/API attempts by the unauthorized user are rejected (e.g., `403 Forbidden` or redirected with an "Access Denied" message) and no record is added to the database[cite: 1].
-- **Fail Criteria:** Unauthorized user sees the add button, can open the creation form via direct URL, or successfully inserts a customer record into the database[cite: 1].
+| Test ID | Test Case Name | Methodology | Status (Pass/Fail) | Notes |
+| :--- | :--- | :--- | :---: | :--- |
+| **CST-01** | Successful Customer List Loading | Positive Testing | [ ] | |
+| **CST-02** | Empty Customer List State | Boundary / Edge Case | [ ] | |
+| **CST-03** | Valid Customer Search | Equivalence Partitioning (Valid) | [ ] | |
+| **CST-04** | Non-Existent Customer Search | Equivalence Partitioning (Invalid) | [ ] | |
+| **CST-05** | Filter Customer Records | State / Filter Testing | [ ] | |
+| **CST-06** | Successful Customer Creation | Positive / Boundary Check | [ ] | |
+| **CST-07** | Duplicate Customer Code / Email Check | Negative / Unique Constraint | [ ] | |
+| **CST-08** | Validation Errors on Required & Invalid Fields | Negative / Boundary Value | [ ] | |
+| **CST-09** | Successful Customer Update | Positive Testing | [ ] | |
+| **CST-10** | Edit Validation & Duplicate Conflict | Negative / Unique Constraint | [ ] | |
 
 ---
 
-### Test Case 2.2: Customer Edit Permission (UI & Server)
-- **Action:** 
-  1. Log in as a user **with** the *Edit Customer* right and modify an existing customer's details.
-  2. Log in as a user **without** the *Edit Customer* right, view an existing customer, and attempt to access the edit URL or submit a `PUT/PATCH` request directly.
-- **Pass Criteria:** 
-  * Authorized user can open the edit form and save changes.
-  * Unauthorized user sees fields as read-only (or the "Edit" button is hidden)[cite: 1].
-  * Direct URL/API edit attempts are blocked by the server without modifying database values[cite: 1].
-- **Fail Criteria:** Unauthorized user can edit fields or bypass UI restrictions via direct URL/API calls[cite: 1].
+## 1. Customer List & View
+
+### Test Case CST-01: Successful Customer List Loading (Positive)
+- **Description:** Verify that authenticated users can view the customer directory and list existing records.
+- **Preconditions:** User is logged in with valid credentials; at least 3 customer records exist in the database.
+- **Steps:**
+  1. Navigate to the main application dashboard.
+  2. Click on the "Customers" navigation menu link.
+  3. Observe the customer table/grid rendering.
+- **Expected Result:** The customer page loads successfully without console or server errors. The table displays all customer records with expected columns (e.g., Customer Code, Name, Email, Phone, Status).
+- **Status:** `[ ] Pass` / `[ ] Fail`
 
 ---
 
-### Test Case 2.3: Customer Delete Permission (UI & Server)
-- **Action:** 
-  1. Log in as a user **with** the *Delete Customer* right and delete a test customer record.
-  2. Log in as a user **without** the *Delete Customer* right, inspect the customer list/details, and send a direct `DELETE` request or trigger the delete endpoint.
-- **Pass Criteria:** 
-  * Authorized user sees the "Delete" option and can remove the record.
-  * Unauthorized user does not see any delete controls[cite: 1].
-  * Server rejects unauthorized delete requests with an authorization error and preserves the record[cite: 1].
-- **Fail Criteria:** Delete button is visible to unauthorized roles, or a direct API/URL call deletes the customer[cite: 1].
+### Test Case CST-02: Empty Customer List State (Boundary/Edge Case)
+- **Description:** Verify the system handles a state where zero customer records exist gracefully.
+- **Preconditions:** User is logged in; database has 0 customer records.
+- **Steps:**
+  1. Navigate to the "Customers" page.
+  2. Inspect the content area where customer rows would normally appear.
+- **Expected Result:** The application does not break or show an infinite loading spinner. Instead, it displays a user-friendly empty state message (e.g., *"No customers found. Click 'Add Customer' to create one."*).
+- **Status:** `[ ] Pass` / `[ ] Fail`
 
 ---
 
-## 3. Product Module Permissions
+## 2. Search & Filtering
 
-### Test Case 3.1: Product Add, Edit, and Delete Permissions (UI & Server)
-- **Action:** 
-  1. Test **Add**, **Edit**, and **Delete** product actions using a role **with** the respective rights.
-  2. Repeat the checks using a role **without** those rights, verifying both screen elements and direct URL/API endpoints[cite: 1].
-- **Pass Criteria:** 
-  * Menus and action buttons dynamically reflect the logged-in user's assigned rights[cite: 1].
-  * All unauthorized direct URL visits or `POST`/`PUT`/`DELETE` API calls return an access error (`403 Forbidden` or redirect) and leave product data unchanged[cite: 1].
-- **Fail Criteria:** UI controls appear for restricted users, or server endpoints process unauthorized product modifications[cite: 1].
+### Test Case CST-03: Valid Customer Search (Equivalence Partitioning - Valid Input)
+- **Description:** Verify that searching for an existing customer by code, name, or email returns accurate matching results.
+- **Preconditions:** Customers exist in the database, including one with Customer Code `CUST-001` and Name `Acme Corp`.
+- **Steps:**
+  1. Navigate to the "Customers" page.
+  2. Locate the search input field.
+  3. Type `"Acme"` or `"CUST-001"` into the search bar and trigger the search.
+- **Expected Result:** The customer table dynamically filters to show only records matching the query string (`Acme Corp`), hiding non-matching entries.
+- **Status:** `[ ] Pass` / `[ ] Fail`
 
 ---
 
-### Test Case 3.2: Product Price Right Enforcement (Field-Level Control)
-- **Action:** 
-  1. Log in as a user who has *Edit Product* rights **but lacks** *Edit Price* rights, open a product edit screen, and inspect the Price field.
-  2. Attempt to modify the price value via browser DevTools (enabling a disabled input) or by sending a direct `PUT/PATCH` payload containing a modified `price` field.
-- **Pass Criteria:** 
-  * In the UI, the Price input field is either hidden or disabled/read-only while other permitted product fields remain editable[cite: 1].
-  * On the server, any modified `price` value submitted by a user without *Price Rights* is rejected or ignored, keeping the original price intact[cite: 1].
-- **Fail Criteria:** User without *Price Rights* can edit the price field in the UI, or successfully updates the product price by tampering with the form/API request[cite: 1].
+### Test Case CST-04: Non-Existent Customer Search (Equivalence Partitioning - Invalid Input)
+- **Description:** Verify that searching for a term with no database matches handles the query safely.
+- **Steps:**
+  1. Navigate to the "Customers" page.
+  2. Enter a random, non-matching string into the search bar (e.g., `XYZ987Unknown`).
+- **Expected Result:** The table updates cleanly to show an empty result set or a helpful message (e.g., *"No matching customers found"*), without crashing the UI.
+- **Status:** `[ ] Pass` / `[ ] Fail`
+
+---
+
+### Test Case CST-05: Filter Customer Records (Filter Testing)
+- **Description:** Verify that applying status or category filters narrows down the customer list accurately[cite: 3].
+- **Preconditions:** Customer records exist with varying statuses/categories (e.g., *Active* and *Inactive*).
+- **Steps:**
+  1. Navigate to the "Customers" page.
+  2. Select a specific filter option from the filter dropdown (e.g., Status = `Active`).
+  3. Clear/reset the filter afterward.
+- **Expected Result:** Selecting a filter displays only customers matching that criterion. Resetting the filter restores the full customer list.
+- **Status:** `[ ] Pass` / `[ ] Fail`
+
+---
+
+## 3. Customer Addition (Add)
+
+### Test Case CST-06: Successful Customer Creation (Positive / Boundary Check)
+- **Description:** Verify that a user can successfully add a new customer using valid data within acceptable field boundaries.
+- **Steps:**
+  1. Navigate to the "Customers" page and click the "Add Customer" button.
+  2. Fill out all required fields with valid data:
+     - **Customer Code:** `CUST-105` (Unique, within character limits)
+     - **Name:** `John Doe` (Valid string, within character limits)
+     - **Email:** `johndoe@example.com` (Valid email format)
+     - **Phone:** `+63-917-555-0199` (Valid phone format)
+  3. Click the "Save" or "Create Customer" button.
+- **Expected Result:** The customer is successfully created in the database. The user is redirected back to the customer list, a success message appears, and the new customer is visible in the table.
+- **Status:** `[ ] Pass` / `[ ] Fail`
+
+---
+
+### Test Case CST-07: Duplicate Customer Code / Email Check (Negative / Unique Constraint)
+- **Description:** Verify that the system prevents the creation of a customer with a duplicate unique identifier (Customer Code or Email)[cite: 3].
+- **Preconditions:** A customer with Customer Code `CUST-001` and email `existing@example.com` already exists.
+- **Steps:**
+  1. Click "Add Customer".
+  2. Enter `CUST-001` in the Customer Code field (or `existing@example.com` in the Email field) along with valid details for other fields.
+  3. Click "Save".
+- **Expected Result:** Form submission is blocked by application/database unique constraints. A clear inline error message appears indicating that the Customer Code or Email is already in use, and no duplicate record is created.
+- **Status:** `[ ] Pass` / `[ ] Fail`
+
+---
+
+### Test Case CST-08: Validation Errors on Required & Invalid Fields (Negative / Boundary Value)
+- **Description:** Verify that form validation catches empty required fields, malformed emails, and boundary length violations[cite: 3].
+- **Steps:**
+  1. Click "Add Customer".
+  2. Leave required fields (e.g., Customer Code, Name) blank, enter an invalid email format (e.g., `invalid-email`), and input a string exceeding the maximum character limit.
+  3. Click "Save".
+- **Expected Result:** Submission is prevented. Specific inline validation error messages appear next to each offending field (e.g., *"Customer Code is required"*, *"Invalid email format"*).
+- **Status:** `[ ] Pass` / `[ ] Fail`
+
+---
+
+## 4. Customer Editing (Edit)
+
+### Test Case CST-09: Successful Customer Update (Positive)
+- **Description:** Verify that an authorized user can modify existing customer details and save changes successfully.
+- **Steps:**
+  1. Navigate to the customer list and click "Edit" on an existing customer record.
+  2. Update the Phone Number or Name to new valid values.
+  3. Click "Update" or "Save Changes".
+- **Expected Result:** The changes are saved successfully. The UI reflects the updated details immediately, and the database record is updated accurately.
+- **Status:** `[ ] Pass` / `[ ] Fail`
+
+---
+
+### Test Case CST-10: Edit Validation & Duplicate Conflict (Negative / Unique Constraint)
+- **Description:** Verify that updating a customer with blank required fields or a Customer Code/Email already belonging to another record is blocked.
+- **Steps:**
+  1. Open an existing customer's edit form.
+  2. Clear out a required field OR change the Customer Code to one already assigned to a *different* customer.
+  3. Click "Save".
+- **Expected Result:** The system blocks the update, preserves the original database record, and displays clear error feedback explaining the validation or duplicate conflict.
+- **Status:** `[ ] Pass` / `[ ] Fail`
