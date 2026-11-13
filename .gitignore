@@ -9,6 +9,7 @@ node_modules/
 
 # Next.js build output
 .next/
+.nextdev/
 out/
 
 # Logs
@@ -21,3 +22,12 @@ Thumbs.db
 
 # Supabase CLI temporary files
 supabase/.temp/
+
+# Browser QA artefacts and published-app markers
+.playwright-mcp/
+*.genie
+.workbuddy/
+/*.png
+
+# Local agent memory
+.workbuddy-ai/
