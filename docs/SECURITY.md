@@ -23,7 +23,7 @@ The current database policies include:
 
 Some tables currently have RLS enabled but no policies. Normal API access to those tables is therefore restricted by default. Additional policies may be needed when the backend implements access to those tables.
 
-The Customer module validates the Supabase access token and checks the matching `customers.view`, `customers.add`, or `customers.edit` right on the server before listing or mutating records. Customer tables, views, and RLS policies are managed by the database workstream; verify that those policies enforce the same access rules independently of the UI and API.
+The Customer module validates the Supabase access token and checks the matching `customers.view`, `customers.add`, `customers.edit`, `customers.delete`, or `customers.restore` right on the server before listing or mutating records. Delete/restore uses database routines so child checks, deletion stamps, and audit-log writes can be atomic. Customer tables, routines, views, and RLS policies are managed by the database workstream; verify that those policies enforce the same access rules independently of the UI and API.
 
 ## 3. Demo Accounts
 

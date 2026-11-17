@@ -21,6 +21,9 @@ export default function CustomerList() {
   const [activeForm, setActiveForm] = useState(null);
   const [notice, setNotice] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
+  const [pendingDelete, setPendingDelete] = useState(null);
+  const [actionError, setActionError] = useState("");
+  const [isMutating, setIsMutating] = useState(false);
   const [state, setState] = useState({ kind: "loading", message: "" });
 
   useEffect(() => {
@@ -95,6 +98,8 @@ export default function CustomerList() {
           view: result.canViewCustomers,
           add: result.canAddCustomers,
           edit: result.canEditCustomers,
+          delete: result.canDeleteCustomers,
+          restore: result.canRestoreCustomers,
         });
         if (!result.canViewCustomers) {
           setState({
@@ -175,6 +180,7 @@ export default function CustomerList() {
     event.preventDefault();
     setPage(1);
     setNotice("");
+    setActionError("");
     setFilters({
       search: searchInput.trim(),
       payTerms: payTermsInput.trim(),
@@ -182,7 +188,76 @@ export default function CustomerList() {
     });
   }
 
+  async function confirmDelete() {
+    if (!pendingDelete) return;
+
+    setActionError("");
+    setIsMutating(true);
+    try {
+      const response = await fetch(
+        `/api/customers/${encodeURIComponent(pendingDelete.id)}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+      const result = await response.json();
+
+      if (response.status === 401) {
+        router.replace("/login");
+        return;
+      }
+      if (!response.ok) {
+        setActionError(result.error || "Customer could not be deleted.");
+        return;
+      }
+
+      setPendingDelete(null);
+      setNotice("Customer moved to deleted records.");
+      setReloadKey((current) => current + 1);
+    } catch {
+      setActionError("We couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setIsMutating(false);
+    }
+  }
+
+  async function restoreCustomer(customer) {
+    setActionError("");
+    setIsMutating(true);
+    try {
+      const response = await fetch(
+        `/api/customers/${encodeURIComponent(customer.id)}/restore`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+      const result = await response.json();
+
+      if (response.status === 401) {
+        router.replace("/login");
+        return;
+      }
+      if (!response.ok) {
+        setActionError(result.error || "Customer could not be restored.");
+        return;
+      }
+
+      setStatusInput("active");
+      setFilters((current) => ({ ...current, status: "active" }));
+      setPage(1);
+      setNotice("Customer restored to the active list.");
+      setReloadKey((current) => current + 1);
+    } catch {
+      setActionError("We couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setIsMutating(false);
+    }
+  }
+
   const pageCount = Math.max(1, Math.ceil(total / CUSTOMER_PAGE_SIZE));
+  const hasActionColumn = Boolean(rights?.edit || rights?.delete || rights?.restore);
 
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-6 text-slate-800 sm:px-8 lg:px-12">
@@ -233,6 +308,11 @@ export default function CustomerList() {
                 {notice}
               </p>
             )}
+            {actionError && !pendingDelete && (
+              <p className="mb-4 rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-800" role="alert">
+                {actionError}
+              </p>
+            )}
 
             {activeForm && (
               <CustomerForm
@@ -276,6 +356,7 @@ export default function CustomerList() {
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                   <option value="all">All statuses</option>
+                  {rights?.restore && <option value="deleted">Deleted</option>}
                 </select>
               </label>
 
@@ -315,7 +396,7 @@ export default function CustomerList() {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="min-w-[760px] w-full divide-y divide-slate-200 text-left text-sm">
+                <table className="min-w-[820px] w-full divide-y divide-slate-200 text-left text-sm">
                   <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                       <th className="px-5 py-3 font-semibold" scope="col">Code</th>
@@ -323,7 +404,7 @@ export default function CustomerList() {
                       <th className="px-5 py-3 font-semibold" scope="col">Contact</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Pay terms</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Status</th>
-                      {rights?.edit && (
+                      {hasActionColumn && (
                         <th className="px-5 py-3 font-semibold" scope="col">
                           Actions
                         </th>
@@ -344,26 +425,55 @@ export default function CustomerList() {
                         <td className="px-5 py-4">
                           <span
                             className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                              customer.status === "active"
+                              customer.deleted_at
+                                ? "bg-rose-50 text-rose-700"
+                                : customer.status === "active"
                                 ? "bg-emerald-50 text-emerald-700"
                                 : "bg-slate-100 text-slate-600"
                             }`}
                           >
-                            {customer.status}
+                            {customer.deleted_at ? "Deleted" : customer.status}
                           </span>
                         </td>
-                        {rights?.edit && (
+                        {hasActionColumn && (
                           <td className="px-5 py-4">
-                            <button
-                              className="font-medium text-indigo-700 hover:text-indigo-900"
-                              onClick={() => {
-                                setNotice("");
-                                setActiveForm({ mode: "edit", customer });
-                              }}
-                              type="button"
-                            >
-                              Edit
-                            </button>
+                            <div className="flex items-center gap-3">
+                              {rights?.edit && filters.status !== "deleted" && (
+                                <button
+                                  className="font-medium text-indigo-700 hover:text-indigo-900"
+                                  onClick={() => {
+                                    setNotice("");
+                                    setActiveForm({ mode: "edit", customer });
+                                  }}
+                                  type="button"
+                                >
+                                  Edit
+                                </button>
+                              )}
+                              {rights?.delete && filters.status !== "deleted" && (
+                                <button
+                                  className="font-medium text-rose-700 hover:text-rose-900"
+                                  onClick={() => {
+                                    setActionError("");
+                                    setActiveForm(null);
+                                    setPendingDelete(customer);
+                                  }}
+                                  type="button"
+                                >
+                                  Delete
+                                </button>
+                              )}
+                              {rights?.restore && filters.status === "deleted" && (
+                                <button
+                                  className="font-medium text-emerald-700 hover:text-emerald-900 disabled:opacity-50"
+                                  disabled={isMutating}
+                                  onClick={() => restoreCustomer(customer)}
+                                  type="button"
+                                >
+                                  Restore
+                                </button>
+                              )}
+                            </div>
                           </td>
                         )}
                       </tr>
@@ -372,7 +482,7 @@ export default function CustomerList() {
                       <tr>
                         <td
                           className="px-5 py-12 text-center text-slate-500"
-                          colSpan={rights?.edit ? 6 : 5}
+                          colSpan={hasActionColumn ? 6 : 5}
                         >
                           No customers match these filters.
                         </td>
@@ -409,6 +519,46 @@ export default function CustomerList() {
           </>
         )}
       </div>
+      {pendingDelete && (
+        <div
+          aria-labelledby="delete-customer-title"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4"
+          role="dialog"
+        >
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+            <h2 className="text-lg font-semibold text-slate-900" id="delete-customer-title">
+              Delete customer?
+            </h2>
+            <p className="mt-2 text-sm text-slate-600">
+              {pendingDelete.name} will be removed from active use but its history will be kept.
+            </p>
+            {actionError && (
+              <p className="mt-4 rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-800" role="alert">
+                {actionError}
+              </p>
+            )}
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                disabled={isMutating}
+                onClick={() => setPendingDelete(null)}
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                className="rounded-lg bg-rose-700 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-800 disabled:cursor-not-allowed disabled:opacity-60"
+                disabled={isMutating}
+                onClick={confirmDelete}
+                type="button"
+              >
+                {isMutating ? "Deleting..." : "Confirm delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

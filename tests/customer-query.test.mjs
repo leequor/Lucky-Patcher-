@@ -39,9 +39,18 @@ describe("customer list query parsing", () => {
     });
   });
 
+  it("accepts the deleted-record filter", () => {
+    const result = parseCustomerListParams(
+      new URLSearchParams("status=deleted&page=2"),
+    );
+
+    assert.equal(result.filters.status, "deleted");
+    assert.equal(result.filters.page, 2);
+  });
+
   it("rejects invalid filters and malformed pagination", () => {
     assert.match(
-      parseCustomerListParams(new URLSearchParams("status=deleted")).error,
+      parseCustomerListParams(new URLSearchParams("status=archived")).error,
       /valid customer status/,
     );
     assert.match(

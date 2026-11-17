@@ -6,17 +6,20 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request) {
-  const authorization = await authorizeCustomerRight(request, "view");
-  if (authorization.response) {
-    return authorization.response;
-  }
-
   const parsed = parseCustomerListParams(new URL(request.url).searchParams);
   if (parsed.error) {
     return Response.json({ error: parsed.error }, { status: 400 });
   }
 
   const { search, status, payTerms, page, pageSize } = parsed.filters;
+  const authorization = await authorizeCustomerRight(
+    request,
+    status === "deleted" ? "restore" : "view",
+  );
+  if (authorization.response) {
+    return authorization.response;
+  }
+
   const firstRow = (page - 1) * pageSize;
   if (!Number.isSafeInteger(firstRow) || !Number.isSafeInteger(firstRow + pageSize - 1)) {
     return Response.json({ error: "The requested page is outside the supported range." }, { status: 400 });
@@ -24,12 +27,18 @@ export async function GET(request) {
 
   let query = authorization.supabase
     .from("customers")
-    .select("id, code, name, contact, pay_terms, status", { count: "exact" })
-    .is("deleted_at", null)
+    .select("id, code, name, contact, pay_terms, status, deleted_at", { count: "exact" });
+
+  query =
+    status === "deleted"
+      ? query.not("deleted_at", "is", null)
+      : query.is("deleted_at", null);
+
+  query = query
     .order("name", { ascending: true })
     .range(firstRow, firstRow + pageSize - 1);
 
-  if (status !== "all") {
+  if (status !== "all" && status !== "deleted") {
     query = query.eq("status", status);
   }
 
