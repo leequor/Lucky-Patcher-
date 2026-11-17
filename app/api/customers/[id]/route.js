@@ -1,4 +1,5 @@
 import { authorizeCustomerRight } from "../../../lib/customer-access";
+import { runCustomerLifecycleAction } from "../../../lib/customer-lifecycle.mjs";
 import { validateCustomerInput } from "../../../lib/customer-validation.mjs";
 
 export const runtime = "nodejs";
@@ -60,4 +61,18 @@ export async function PATCH(request, { params }) {
       { status: 502 },
     );
   }
+}
+
+export async function DELETE(request, { params }) {
+  const authorization = await authorizeCustomerRight(request, "delete");
+  if (authorization.response) {
+    return authorization.response;
+  }
+
+  const { id } = await params;
+  if (!id || id.length > 100) {
+    return Response.json({ error: "Choose a valid customer to delete." }, { status: 400 });
+  }
+
+  return runCustomerLifecycleAction(authorization.supabase, "delete", id);
 }

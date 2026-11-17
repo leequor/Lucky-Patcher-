@@ -12,7 +12,7 @@ export function parseCustomerListParams(searchParams) {
     return { error: "Search and payment terms must be 100 characters or fewer." };
   }
 
-  if (!["active", "inactive", "all"].includes(status)) {
+  if (!["active", "inactive", "all", "deleted"].includes(status)) {
     return { error: "Choose a valid customer status." };
   }
 

@@ -4,6 +4,8 @@ const CUSTOMER_RIGHTS = {
   view: "customers.view",
   add: "customers.add",
   edit: "customers.edit",
+  delete: "customers.delete",
+  restore: "customers.restore",
 };
 
 function failure(message, status) {
@@ -89,7 +91,7 @@ export async function getCustomerRights(request) {
   if (["superadmin", "admin"].includes(profile.role)) {
     return {
       supabase,
-      rights: { view: true, add: true, edit: true },
+      rights: { view: true, add: true, edit: true, delete: true, restore: true },
     };
   }
 
@@ -118,6 +120,8 @@ export async function getCustomerRights(request) {
       view: grantedRights.has(CUSTOMER_RIGHTS.view),
       add: grantedRights.has(CUSTOMER_RIGHTS.add),
       edit: grantedRights.has(CUSTOMER_RIGHTS.edit),
+      delete: grantedRights.has(CUSTOMER_RIGHTS.delete),
+      restore: grantedRights.has(CUSTOMER_RIGHTS.restore),
     },
   };
 }
