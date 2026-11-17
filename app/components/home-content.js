@@ -32,9 +32,16 @@ export default function HomeContent() {
       cache: "no-store",
       headers: { Authorization: `Bearer ${session.access_token}` },
     })
-      .then((response) => {
+      .then(async (response) => {
+        if (!active) return;
+        if (!response.ok) {
+          setCanViewCustomers(false);
+          return;
+        }
+
+        const access = await response.json();
         if (active) {
-          setCanViewCustomers(response.ok);
+          setCanViewCustomers(access.canViewCustomers === true);
         }
       })
       .catch(() => {

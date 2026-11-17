@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CUSTOMER_PAGE_SIZE } from "../lib/customer-query.mjs";
+import CustomerForm from "./customer-form";
 import { getSupabaseClient } from "./supabase-client";
 
 export default function CustomerList() {
@@ -16,6 +17,10 @@ export default function CustomerList() {
   const [page, setPage] = useState(1);
   const [customers, setCustomers] = useState([]);
   const [total, setTotal] = useState(0);
+  const [rights, setRights] = useState(null);
+  const [activeForm, setActiveForm] = useState(null);
+  const [notice, setNotice] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
   const [state, setState] = useState({ kind: "loading", message: "" });
 
   useEffect(() => {
@@ -67,6 +72,55 @@ export default function CustomerList() {
   useEffect(() => {
     if (!accessToken) return undefined;
 
+    let active = true;
+
+    async function loadRights() {
+      try {
+        const response = await fetch("/api/customers/access", {
+          cache: "no-store",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const result = await response.json();
+
+        if (!active) return;
+        if (response.status === 401) {
+          router.replace("/login");
+          return;
+        }
+        if (!response.ok) {
+          throw new Error(result.error || "Customer access could not be checked.");
+        }
+
+        setRights({
+          view: result.canViewCustomers,
+          add: result.canAddCustomers,
+          edit: result.canEditCustomers,
+        });
+        if (!result.canViewCustomers) {
+          setState({
+            kind: "forbidden",
+            message: "You do not have the Customer view right.",
+          });
+        }
+      } catch (error) {
+        if (active) {
+          setState({
+            kind: "error",
+            message: error.message || "Customer access could not be checked.",
+          });
+        }
+      }
+    }
+
+    loadRights();
+    return () => {
+      active = false;
+    };
+  }, [accessToken, router]);
+
+  useEffect(() => {
+    if (!accessToken || rights?.view !== true) return undefined;
+
     const controller = new AbortController();
     const params = new URLSearchParams({
       page: String(page),
@@ -115,11 +169,12 @@ export default function CustomerList() {
 
     loadCustomers();
     return () => controller.abort();
-  }, [accessToken, filters, page, router]);
+  }, [accessToken, filters, page, reloadKey, rights?.view, router]);
 
   function applyFilters(event) {
     event.preventDefault();
     setPage(1);
+    setNotice("");
     setFilters({
       search: searchInput.trim(),
       payTerms: payTermsInput.trim(),
@@ -144,6 +199,18 @@ export default function CustomerList() {
               Search and review customer accounts.
             </p>
           </div>
+          {rights?.add && (
+            <button
+              className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700"
+              onClick={() => {
+                setNotice("");
+                setActiveForm({ mode: "add", customer: null });
+              }}
+              type="button"
+            >
+              Add customer
+            </button>
+          )}
         </header>
 
         {state.kind === "forbidden" ? (
@@ -161,6 +228,27 @@ export default function CustomerList() {
           </section>
         ) : (
           <>
+            {notice && (
+              <p className="mb-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status">
+                {notice}
+              </p>
+            )}
+
+            {activeForm && (
+              <CustomerForm
+                accessToken={accessToken}
+                customer={activeForm.customer}
+                mode={activeForm.mode}
+                onAuthExpired={() => router.replace("/login")}
+                onCancel={() => setActiveForm(null)}
+                onSuccess={(message) => {
+                  setActiveForm(null);
+                  setNotice(message);
+                  setReloadKey((current) => current + 1);
+                }}
+              />
+            )}
+
             <form
               className="mb-5 grid gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-[minmax(14rem,2fr)_minmax(10rem,1fr)_minmax(10rem,1fr)_auto]"
               onSubmit={applyFilters}
@@ -235,6 +323,11 @@ export default function CustomerList() {
                       <th className="px-5 py-3 font-semibold" scope="col">Contact</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Pay terms</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Status</th>
+                      {rights?.edit && (
+                        <th className="px-5 py-3 font-semibold" scope="col">
+                          Actions
+                        </th>
+                      )}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -259,11 +352,28 @@ export default function CustomerList() {
                             {customer.status}
                           </span>
                         </td>
+                        {rights?.edit && (
+                          <td className="px-5 py-4">
+                            <button
+                              className="font-medium text-indigo-700 hover:text-indigo-900"
+                              onClick={() => {
+                                setNotice("");
+                                setActiveForm({ mode: "edit", customer });
+                              }}
+                              type="button"
+                            >
+                              Edit
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     ))}
                     {state.kind === "ready" && customers.length === 0 && (
                       <tr>
-                        <td className="px-5 py-12 text-center text-slate-500" colSpan={5}>
+                        <td
+                          className="px-5 py-12 text-center text-slate-500"
+                          colSpan={rights?.edit ? 6 : 5}
+                        >
                           No customers match these filters.
                         </td>
                       </tr>
