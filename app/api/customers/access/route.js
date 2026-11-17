@@ -1,13 +1,17 @@
-import { authorizeCustomerView } from "../../../lib/customer-access";
+import { getCustomerRights } from "../../../lib/customer-access";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request) {
-  const authorization = await authorizeCustomerView(request);
-  if (authorization.response) {
-    return authorization.response;
+  const access = await getCustomerRights(request);
+  if (access.response) {
+    return access.response;
   }
 
-  return Response.json({ canViewCustomers: true });
+  return Response.json({
+    canViewCustomers: access.rights.view,
+    canAddCustomers: access.rights.add,
+    canEditCustomers: access.rights.edit,
+  });
 }
