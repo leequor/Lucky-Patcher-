@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "./supabase-client";
 
@@ -17,6 +18,35 @@ export default function HomeContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [canViewCustomers, setCanViewCustomers] = useState(false);
+
+  useEffect(() => {
+    if (!session?.access_token) {
+      setCanViewCustomers(false);
+      return undefined;
+    }
+
+    let active = true;
+
+    fetch("/api/customers/access", {
+      cache: "no-store",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then((response) => {
+        if (active) {
+          setCanViewCustomers(response.ok);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setCanViewCustomers(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [session]);
 
   useEffect(() => {
     const supabase = getSupabaseClient();
@@ -127,6 +157,14 @@ export default function HomeContent() {
         <div className="mb-5 flex items-center justify-between gap-4">
           <p className="text-sm text-slate-700">Plan ID: S1-DEV-08 (simple version)</p>
           <div className="flex items-center gap-3 text-sm text-slate-700">
+            {canViewCustomers && (
+              <Link
+                className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50"
+                href="/customers"
+              >
+                Customers
+              </Link>
+            )}
             <span>{session.user.email}</span>
             <button
               className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
