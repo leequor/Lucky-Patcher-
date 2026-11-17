@@ -25,6 +25,8 @@ Some tables currently have RLS enabled but no policies. Normal API access to tho
 
 The Customer module validates the Supabase access token and checks the matching `customers.view`, `customers.add`, `customers.edit`, `customers.delete`, or `customers.restore` right on the server before listing or mutating records. Delete/restore uses database routines so child checks, deletion stamps, and audit-log writes can be atomic. Customer tables, routines, views, and RLS policies are managed by the database workstream; verify that those policies enforce the same access rules independently of the UI and API.
 
+The Product module validates the Supabase access token and checks the `products.view` right on the server before returning product records. The database-provided product view must not bypass the intended RLS access rules.
+
 ## 3. Demo Accounts
 
 Three email-confirmed demo accounts currently exist:

@@ -35,6 +35,8 @@ The registration page is available at `/register`. It creates users with Supabas
 
 Users with the `customers.view` right can open the Customers page from the dashboard. The list defaults to active customers, hides soft-deleted records, and supports searching, status/payment-term filters, and pagination. Users need matching `customers.add`, `customers.edit`, `customers.delete`, or `customers.restore` rights to see and use those actions; the server checks each right again. Delete/restore calls the database routines `soft_delete_customer` and `restore_customer`, which must enforce active-child checks, maintain deletion stamps, and write the audit log. Customer schema, database views, indexes, seed data, routines, and Row Level Security are managed by the database workstream; the app validates access on the server and relies on database policies for row access.
 
+Users with the `products.view` right can open the Products page from the dashboard. The list supports code/description search, unit/status filters, pagination, and displays the current price. The app expects the database workstream's `products_active` view to provide the current-price value as of today; verify that its RLS behavior matches the server-side Product view-right check.
+
 Users who forget their password can request a reset email at `/forgot-password` and choose a new password at `/reset-password`. In the Supabase dashboard, add the app's origin to the Auth redirect URL allow list; reset emails redirect to `<app-origin>/reset-password`. The reset form requires an active Supabase recovery session, so expired or already-used links must be requested again.
 
 To create a production build and run it locally:

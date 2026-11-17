@@ -19,6 +19,7 @@ export default function HomeContent() {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [authError, setAuthError] = useState("");
   const [canViewCustomers, setCanViewCustomers] = useState(false);
+  const [canViewProducts, setCanViewProducts] = useState(false);
 
   useEffect(() => {
     if (!session?.access_token) {
@@ -47,6 +48,41 @@ export default function HomeContent() {
       .catch(() => {
         if (active) {
           setCanViewCustomers(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [session]);
+
+  useEffect(() => {
+    if (!session?.access_token) {
+      setCanViewProducts(false);
+      return undefined;
+    }
+
+    let active = true;
+
+    fetch("/api/products/access", {
+      cache: "no-store",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then(async (response) => {
+        if (!active) return;
+        if (!response.ok) {
+          setCanViewProducts(false);
+          return;
+        }
+
+        const access = await response.json();
+        if (active) {
+          setCanViewProducts(access.canViewProducts === true);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setCanViewProducts(false);
         }
       });
 
@@ -170,6 +206,14 @@ export default function HomeContent() {
                 href="/customers"
               >
                 Customers
+              </Link>
+            )}
+            {canViewProducts && (
+              <Link
+                className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50"
+                href="/products"
+              >
+                Products
               </Link>
             )}
             <span>{session.user.email}</span>
