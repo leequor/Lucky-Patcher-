@@ -9,5 +9,9 @@ export async function GET(request) {
     return access.response;
   }
 
-  return Response.json({ canViewProducts: access.rights.view });
+  return Response.json({
+    canViewProducts: access.rights.view,
+    canAddProducts: access.rights.add,
+    canEditProducts: access.rights.edit,
+  });
 }
