@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DEFAULT_PAGE_SIZE } from "../lib/list-query.mjs";
+import ProductForm from "./product-form";
 import { getSupabaseClient } from "./supabase-client";
 
 function formatPrice(value) {
@@ -25,7 +26,7 @@ function formatPrice(value) {
 export default function ProductList() {
   const router = useRouter();
   const [accessToken, setAccessToken] = useState("");
-  const [canViewProducts, setCanViewProducts] = useState(null);
+  const [rights, setRights] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [unitInput, setUnitInput] = useState("");
   const [statusInput, setStatusInput] = useState("active");
@@ -33,6 +34,9 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
+  const [activeForm, setActiveForm] = useState(null);
+  const [notice, setNotice] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
   const [state, setState] = useState({ kind: "loading", message: "" });
 
   useEffect(() => {
@@ -102,7 +106,11 @@ export default function ProductList() {
           throw new Error(result.error || "Product access could not be checked.");
         }
 
-        setCanViewProducts(result.canViewProducts === true);
+        setRights({
+          view: result.canViewProducts,
+          add: result.canAddProducts,
+          edit: result.canEditProducts,
+        });
         if (result.canViewProducts !== true) {
           setState({
             kind: "forbidden",
@@ -126,7 +134,7 @@ export default function ProductList() {
   }, [accessToken, router]);
 
   useEffect(() => {
-    if (!accessToken || canViewProducts !== true) return undefined;
+    if (!accessToken || rights?.view !== true) return undefined;
 
     const controller = new AbortController();
     const params = new URLSearchParams({
@@ -155,7 +163,7 @@ export default function ProductList() {
         if (response.status === 403) {
           setProducts([]);
           setTotal(0);
-          setCanViewProducts(false);
+          setRights((current) => ({ ...current, view: false }));
           setState({ kind: "forbidden", message: result.error });
           return;
         }
@@ -177,7 +185,7 @@ export default function ProductList() {
 
     loadProducts();
     return () => controller.abort();
-  }, [accessToken, canViewProducts, filters, page, router]);
+  }, [accessToken, filters, page, reloadKey, rights?.view, router]);
 
   function applyFilters(event) {
     event.preventDefault();
@@ -190,20 +198,35 @@ export default function ProductList() {
   }
 
   const pageCount = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
+  const hasActionColumn = Boolean(rights?.edit);
 
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-6 text-slate-800 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <header className="mb-6">
-          <Link className="text-sm font-medium text-indigo-700 hover:text-indigo-900" href="/">
-            &larr; Dashboard
-          </Link>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
-            Products
-          </h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Browse products and their current prices.
-          </p>
+        <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <Link className="text-sm font-medium text-indigo-700 hover:text-indigo-900" href="/">
+              &larr; Dashboard
+            </Link>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
+              Products
+            </h1>
+            <p className="mt-1 text-sm text-slate-600">
+              Browse products and their current prices.
+            </p>
+          </div>
+          {rights?.add && (
+            <button
+              className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700"
+              onClick={() => {
+                setNotice("");
+                setActiveForm({ mode: "add", product: null });
+              }}
+              type="button"
+            >
+              Add product
+            </button>
+          )}
         </header>
 
         {state.kind === "forbidden" ? (
@@ -221,6 +244,27 @@ export default function ProductList() {
           </section>
         ) : (
           <>
+            {notice && (
+              <p className="mb-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status">
+                {notice}
+              </p>
+            )}
+
+            {activeForm && (
+              <ProductForm
+                accessToken={accessToken}
+                product={activeForm.product}
+                mode={activeForm.mode}
+                onAuthExpired={() => router.replace("/login")}
+                onCancel={() => setActiveForm(null)}
+                onSuccess={(message) => {
+                  setActiveForm(null);
+                  setNotice(message);
+                  setReloadKey((current) => current + 1);
+                }}
+              />
+            )}
+
             <form
               className="mb-5 grid gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-[minmax(14rem,2fr)_minmax(10rem,1fr)_minmax(10rem,1fr)_auto]"
               onSubmit={applyFilters}
@@ -295,6 +339,9 @@ export default function ProductList() {
                       <th className="px-5 py-3 font-semibold" scope="col">Unit</th>
                       <th className="px-5 py-3 text-right font-semibold" scope="col">Current price</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Status</th>
+                      {hasActionColumn && (
+                        <th className="px-5 py-3 font-semibold" scope="col">Actions</th>
+                      )}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -319,11 +366,27 @@ export default function ProductList() {
                             {product.status}
                           </span>
                         </td>
+                        {hasActionColumn && (
+                          <td className="px-5 py-4">
+                            {rights?.edit && (
+                              <button
+                                className="font-medium text-indigo-700 hover:text-indigo-900"
+                                onClick={() => {
+                                  setNotice("");
+                                  setActiveForm({ mode: "edit", product });
+                                }}
+                                type="button"
+                              >
+                                Edit
+                              </button>
+                            )}
+                          </td>
+                        )}
                       </tr>
                     ))}
                     {state.kind === "ready" && products.length === 0 && (
                       <tr>
-                        <td className="px-5 py-12 text-center text-slate-500" colSpan={5}>
+                        <td className="px-5 py-12 text-center text-slate-500"                         colSpan={hasActionColumn ? 6 : 5}>
                           No products match these filters.
                         </td>
                       </tr>
