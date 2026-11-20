@@ -17,7 +17,10 @@ export async function GET(request) {
     return Response.json({ error: parsed.error }, { status: 400 });
   }
 
-  const authorization = await authorizeProductView(request);
+  const authorization = await authorizeProductRight(
+    request,
+    status === "deleted" ? "restore" : "view",
+  );
   if (authorization.response) {
     return authorization.response;
   }
@@ -32,12 +35,18 @@ export async function GET(request) {
   }
 
   let query = authorization.supabase
-    .from("products_active")
-    .select("id, code, description, unit, current_price, status", { count: "exact" })
+    .from("products")
+    .select("id, code, description, unit, current_price, status, deleted_at", { count: "exact" })
     .order("description", { ascending: true })
     .range(firstRow, firstRow + pageSize - 1);
 
-  if (status !== "all") {
+  if (status === "deleted") {
+    query = query.not("deleted_at", "is", null);
+  } else {
+    query = query.is("deleted_at", null);
+  }
+
+  if (status !== "all" && status !== "deleted") {
     query = query.ilike("status", status);
   }
   if (unit) {

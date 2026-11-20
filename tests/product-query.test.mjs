@@ -93,10 +93,8 @@ describe("product list query parsing", () => {
     const capped = parseProductListParams(new URLSearchParams("pageSize=500"));
     assert.equal(capped.filters.pageSize, 50);
 
-    assert.match(
-      parseProductListParams(new URLSearchParams("status=deleted")).error,
-      /valid product status/,
-    );
+    const deleted = parseProductListParams(new URLSearchParams("status=deleted"));
+    assert.equal(deleted.filters.status, "deleted");
     assert.match(
       parseProductListParams(new URLSearchParams(`unit=${"x".repeat(41)}`)).error,
       /unit 40 characters/,

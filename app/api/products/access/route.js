@@ -13,5 +13,7 @@ export async function GET(request) {
     canViewProducts: access.rights.view,
     canAddProducts: access.rights.add,
     canEditProducts: access.rights.edit,
+    canDeleteProducts: access.rights.delete,
+    canRestoreProducts: access.rights.restore,
   });
 }

@@ -1,4 +1,5 @@
 import { authorizeProductRight } from "../../../lib/product-access";
+import { runProductLifecycleAction } from "../../../lib/product-lifecycle.mjs";
 import { validateProductInput } from "../../../lib/product-validation.mjs";
 
 export const runtime = "nodejs";
@@ -60,4 +61,18 @@ export async function PATCH(request, { params }) {
       { status: 502 },
     );
   }
+}
+
+export async function DELETE(request, { params }) {
+  const authorization = await authorizeProductRight(request, "delete");
+  if (authorization.response) {
+    return authorization.response;
+  }
+
+  const { id } = await params;
+  if (!id || id.length > 100) {
+    return Response.json({ error: "Choose a valid product to delete." }, { status: 400 });
+  }
+
+  return runProductLifecycleAction(authorization.supabase, "delete", id);
 }

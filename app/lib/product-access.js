@@ -4,6 +4,8 @@ const PRODUCT_RIGHTS = {
   view: "products.view",
   add: "products.add",
   edit: "products.edit",
+  delete: "products.delete",
+  restore: "products.restore",
 };
 
 export function getProductRights(request) {
