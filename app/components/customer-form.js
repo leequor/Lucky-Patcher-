@@ -9,7 +9,7 @@ import {
 const EMPTY_CUSTOMER = {
   code: "",
   name: "",
-  contact: "",
+  address: "",
   pay_terms: "",
 };
 
@@ -18,7 +18,7 @@ function getCustomerValues(customer) {
     ? {
         code: customer.code || "",
         name: customer.name || "",
-        contact: customer.contact || "",
+        address: customer.address || "",
         pay_terms: customer.pay_terms || "",
       }
     : EMPTY_CUSTOMER;
@@ -162,22 +162,22 @@ export default function CustomerForm({
         </div>
 
         <div>
-          <label className="text-sm font-medium text-slate-700" htmlFor="customer-contact">
-            Contact
+          <label className="text-sm font-medium text-slate-700" htmlFor="customer-address">
+            Address
           </label>
           <input
-            aria-describedby={errors.contact ? "customer-contact-error" : undefined}
-            aria-invalid={Boolean(errors.contact)}
+            aria-describedby={errors.address ? "customer-address-error" : undefined}
+            aria-invalid={Boolean(errors.address)}
             className={inputClass}
-            id="customer-contact"
+            id="customer-address"
             maxLength={200}
-            name="contact"
+            name="address"
             onChange={updateField}
-            value={values.contact}
+            value={values.address}
           />
-          {errors.contact && (
-            <p className="mt-1 text-sm text-rose-700" id="customer-contact-error">
-              {errors.contact}
+          {errors.address && (
+            <p className="mt-1 text-sm text-rose-700" id="customer-address-error">
+              {errors.address}
             </p>
           )}
         </div>
