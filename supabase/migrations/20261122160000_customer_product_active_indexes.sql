@@ -5,7 +5,8 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA extensions;
 
 -- Active customer view.
-CREATE OR REPLACE VIEW public.customer_active AS
+CREATE OR REPLACE VIEW public.customer_active
+WITH (security_invoker = true) AS
 SELECT
     custno,
     custname,
@@ -14,10 +15,11 @@ SELECT
     is_deleted,
     stamp
 FROM public.customer
-WHERE NOT is_deleted;
+WHERE is_deleted = false;
 
 -- Active product view.
-CREATE OR REPLACE VIEW public.product_active AS
+CREATE OR REPLACE VIEW public.product_active
+WITH (security_invoker = true) AS
 SELECT
     prodcode,
     description,
@@ -25,7 +27,7 @@ SELECT
     is_deleted,
     stamp
 FROM public.product
-WHERE NOT is_deleted;
+WHERE is_deleted = false;
 
 -- Customer search indexes.
 CREATE INDEX IF NOT EXISTS idx_customer_active_custno_trgm
