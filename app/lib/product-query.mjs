@@ -1,3 +1,4 @@
+
 import { escapeSearchPattern, parsePageParams } from "./list-query.mjs";
 
 export function parseProductListParams(searchParams) {
@@ -6,13 +7,17 @@ export function parseProductListParams(searchParams) {
   const status = searchParams.get("status") || "active";
 
   if (search.length > 100 || unit.length > 40) {
-    return { error: "Search must be 100 characters and unit 40 characters or fewer." };
+    return {
+      error: "Search must be 100 characters and unit 40 characters or fewer.",
+    };
   }
-if (!["active", "all", "deleted"].includes(status)) {
+
+  if (!["active", "all", "deleted"].includes(status)) {
     return { error: "Choose a valid product status." };
   }
 
   const pagination = parsePageParams(searchParams);
+
   if (pagination.error) {
     return pagination;
   }
