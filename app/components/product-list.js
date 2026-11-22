@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DEFAULT_PAGE_SIZE } from "../lib/list-query.mjs";
+import ProductForm from "./product-form";
 import { getSupabaseClient } from "./supabase-client";
 
 function formatPrice(value) {
@@ -25,7 +26,7 @@ function formatPrice(value) {
 export default function ProductList() {
   const router = useRouter();
   const [accessToken, setAccessToken] = useState("");
-  const [canViewProducts, setCanViewProducts] = useState(null);
+  const [rights, setRights] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [unitInput, setUnitInput] = useState("");
   const [statusInput, setStatusInput] = useState("active");
@@ -33,6 +34,12 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
+  const [activeForm, setActiveForm] = useState(null);
+  const [notice, setNotice] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
+  const [pendingDelete, setPendingDelete] = useState(null);
+  const [actionError, setActionError] = useState("");
+  const [isMutating, setIsMutating] = useState(false);
   const [state, setState] = useState({ kind: "loading", message: "" });
 
   useEffect(() => {
@@ -102,7 +109,13 @@ export default function ProductList() {
           throw new Error(result.error || "Product access could not be checked.");
         }
 
-        setCanViewProducts(result.canViewProducts === true);
+        setRights({
+          view: result.canViewProducts,
+          add: result.canAddProducts,
+          edit: result.canEditProducts,
+          delete: result.canDeleteProducts,
+          restore: result.canRestoreProducts,
+        });
         if (result.canViewProducts !== true) {
           setState({
             kind: "forbidden",
@@ -126,7 +139,7 @@ export default function ProductList() {
   }, [accessToken, router]);
 
   useEffect(() => {
-    if (!accessToken || canViewProducts !== true) return undefined;
+    if (!accessToken || rights?.view !== true) return undefined;
 
     const controller = new AbortController();
     const params = new URLSearchParams({
@@ -155,7 +168,7 @@ export default function ProductList() {
         if (response.status === 403) {
           setProducts([]);
           setTotal(0);
-          setCanViewProducts(false);
+          setRights((current) => ({ ...current, view: false }));
           setState({ kind: "forbidden", message: result.error });
           return;
         }
@@ -177,11 +190,13 @@ export default function ProductList() {
 
     loadProducts();
     return () => controller.abort();
-  }, [accessToken, canViewProducts, filters, page, router]);
+  }, [accessToken, filters, page, reloadKey, rights?.view, router]);
 
   function applyFilters(event) {
     event.preventDefault();
     setPage(1);
+    setNotice("");
+    setActionError("");
     setFilters({
       search: searchInput.trim(),
       unit: unitInput.trim(),
@@ -189,21 +204,104 @@ export default function ProductList() {
     });
   }
 
+  async function confirmDelete() {
+    if (!pendingDelete) return;
+
+    setActionError("");
+    setIsMutating(true);
+    try {
+      const response = await fetch(
+        `/api/products/${encodeURIComponent(pendingDelete.id)}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+      const result = await response.json();
+
+      if (response.status === 401) {
+        router.replace("/login");
+        return;
+      }
+      if (!response.ok) {
+        setActionError(result.error || "Product could not be deleted.");
+        return;
+      }
+
+      setPendingDelete(null);
+      setNotice("Product moved to deleted records.");
+      setReloadKey((current) => current + 1);
+    } catch {
+      setActionError("We couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setIsMutating(false);
+    }
+  }
+
+  async function restoreProduct(product) {
+    setActionError("");
+    setIsMutating(true);
+    try {
+      const response = await fetch(
+        `/api/products/${encodeURIComponent(product.id)}/restore`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+      const result = await response.json();
+
+      if (response.status === 401) {
+        router.replace("/login");
+        return;
+      }
+      if (!response.ok) {
+        setActionError(result.error || "Product could not be restored.");
+        return;
+      }
+
+      setStatusInput("active");
+      setFilters((current) => ({ ...current, status: "active" }));
+      setPage(1);
+      setNotice("Product restored to the active list.");
+      setReloadKey((current) => current + 1);
+    } catch {
+      setActionError("We couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setIsMutating(false);
+    }
+  }
+
   const pageCount = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
+  const hasActionColumn = Boolean(rights?.edit || rights?.delete || rights?.restore);
 
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-6 text-slate-800 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <header className="mb-6">
-          <Link className="text-sm font-medium text-indigo-700 hover:text-indigo-900" href="/">
-            &larr; Dashboard
-          </Link>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
-            Products
-          </h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Browse products and their current prices.
-          </p>
+        <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <Link className="text-sm font-medium text-indigo-700 hover:text-indigo-900" href="/">
+              &larr; Dashboard
+            </Link>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
+              Products
+            </h1>
+            <p className="mt-1 text-sm text-slate-600">
+              Browse products and their current prices.
+            </p>
+          </div>
+          {rights?.add && (
+            <button
+              className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700"
+              onClick={() => {
+                setNotice("");
+                setActiveForm({ mode: "add", product: null });
+              }}
+              type="button"
+            >
+              Add product
+            </button>
+          )}
         </header>
 
         {state.kind === "forbidden" ? (
@@ -221,6 +319,32 @@ export default function ProductList() {
           </section>
         ) : (
           <>
+            {notice && (
+              <p className="mb-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status">
+                {notice}
+              </p>
+            )}
+            {actionError && !pendingDelete && (
+              <p className="mb-4 rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-800" role="alert">
+                {actionError}
+              </p>
+            )}
+
+            {activeForm && (
+              <ProductForm
+                accessToken={accessToken}
+                product={activeForm.product}
+                mode={activeForm.mode}
+                onAuthExpired={() => router.replace("/login")}
+                onCancel={() => setActiveForm(null)}
+                onSuccess={(message) => {
+                  setActiveForm(null);
+                  setNotice(message);
+                  setReloadKey((current) => current + 1);
+                }}
+              />
+            )}
+
             <form
               className="mb-5 grid gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-[minmax(14rem,2fr)_minmax(10rem,1fr)_minmax(10rem,1fr)_auto]"
               onSubmit={applyFilters}
@@ -259,6 +383,7 @@ export default function ProductList() {
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                   <option value="all">All statuses</option>
+                  {rights?.restore && <option value="deleted">Deleted</option>}
                 </select>
               </label>
 
@@ -274,6 +399,51 @@ export default function ProductList() {
               <p className="mb-4 rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-800" role="alert">
                 {state.message}
               </p>
+            )}
+
+            {pendingDelete && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 px-4" role="presentation">
+                <section
+                  aria-labelledby="delete-product-title"
+                  aria-modal="true"
+                  className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
+                  role="dialog"
+                >
+                  <h2 id="delete-product-title" className="text-lg font-semibold text-slate-900">
+                    Delete product
+                  </h2>
+                  <p className="mt-2 text-sm text-slate-600">
+                    Move <span className="font-medium">{pendingDelete.description}</span> to deleted records?
+                    Its price history and audit record will be preserved.
+                  </p>
+                  {actionError && (
+                    <p className="mt-4 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800" role="alert">
+                      {actionError}
+                    </p>
+                  )}
+                  <div className="mt-5 flex justify-end gap-3">
+                    <button
+                      className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                      disabled={isMutating}
+                      onClick={() => {
+                        setPendingDelete(null);
+                        setActionError("");
+                      }}
+                      type="button"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="rounded-lg bg-rose-700 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-800 disabled:opacity-50"
+                      disabled={isMutating}
+                      onClick={confirmDelete}
+                      type="button"
+                    >
+                      {isMutating ? "Deleting..." : "Delete"}
+                    </button>
+                  </div>
+                </section>
+              </div>
             )}
 
             <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -295,6 +465,9 @@ export default function ProductList() {
                       <th className="px-5 py-3 font-semibold" scope="col">Unit</th>
                       <th className="px-5 py-3 text-right font-semibold" scope="col">Current price</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Status</th>
+                      {hasActionColumn && (
+                        <th className="px-5 py-3 font-semibold" scope="col">Actions</th>
+                      )}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -311,19 +484,62 @@ export default function ProductList() {
                         <td className="px-5 py-4">
                           <span
                             className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                              String(product.status).toLowerCase() === "active"
+                              product.deleted_at
+                                ? "bg-rose-50 text-rose-700"
+                                : String(product.status).toLowerCase() === "active"
                                 ? "bg-emerald-50 text-emerald-700"
                                 : "bg-slate-100 text-slate-600"
                             }`}
                           >
-                            {product.status}
+                            {product.deleted_at ? "Deleted" : product.status}
                           </span>
                         </td>
+                        {hasActionColumn && (
+                          <td className="px-5 py-4">
+                            <div className="flex items-center gap-3">
+                              {rights?.edit && filters.status !== "deleted" && (
+                                <button
+                                  className="font-medium text-indigo-700 hover:text-indigo-900"
+                                  onClick={() => {
+                                    setNotice("");
+                                    setActiveForm({ mode: "edit", product });
+                                  }}
+                                  type="button"
+                                >
+                                  Edit
+                                </button>
+                              )}
+                              {rights?.delete && filters.status !== "deleted" && (
+                                <button
+                                  className="font-medium text-rose-700 hover:text-rose-900"
+                                  onClick={() => {
+                                    setActionError("");
+                                    setActiveForm(null);
+                                    setPendingDelete(product);
+                                  }}
+                                  type="button"
+                                >
+                                  Delete
+                                </button>
+                              )}
+                              {rights?.restore && filters.status === "deleted" && (
+                                <button
+                                  className="font-medium text-emerald-700 hover:text-emerald-900 disabled:opacity-50"
+                                  disabled={isMutating}
+                                  onClick={() => restoreProduct(product)}
+                                  type="button"
+                                >
+                                  Restore
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        )}
                       </tr>
                     ))}
                     {state.kind === "ready" && products.length === 0 && (
                       <tr>
-                        <td className="px-5 py-12 text-center text-slate-500" colSpan={5}>
+                        <td className="px-5 py-12 text-center text-slate-500"                         colSpan={hasActionColumn ? 6 : 5}>
                           No products match these filters.
                         </td>
                       </tr>
