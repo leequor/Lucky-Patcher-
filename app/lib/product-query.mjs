@@ -8,7 +8,7 @@ export function parseProductListParams(searchParams) {
   if (search.length > 100 || unit.length > 40) {
     return { error: "Search must be 100 characters and unit 40 characters or fewer." };
   }
-  if (!["active", "inactive", "all", "deleted"].includes(status)) {
+if (!["active", "all", "deleted"].includes(status)) {
     return { error: "Choose a valid product status." };
   }
 
