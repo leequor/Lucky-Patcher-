@@ -119,10 +119,17 @@ export async function POST(request) {
 
   try {
     const { data, error } = await authorization.supabase
-      .from("customers")
-      .insert(validation.value)
-      .select("id, code, name, contact, pay_terms, status")
-      .single();
+  .from("customer")
+  .insert({
+    custno: validation.value.code,
+    custname: validation.value.name,
+    address: validation.value.address,
+    payterm: validation.value.pay_terms,
+  })
+  .select(
+    "id:custno, code:custno, name:custname, address, pay_terms:payterm, is_deleted, stamp",
+  )
+  .single();
 
     if (error?.code === "23505") {
       return Response.json(
