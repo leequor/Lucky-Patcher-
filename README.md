@@ -103,69 +103,116 @@ npm start
 - Keep database schema creation and sample data in their assigned tasks.
 - Never commit passwords, service-role keys, or other secrets.
 
-## S1-UIX-01
-### Global Styling
-- **Font Family:** Inter, sans-serif
-- **Modal Surface:** #FFFFFF (White)
-- **Primary Buttons / Dark:** #000000 (Black)
-- **Input Fields & Secondary Buttons:** #F3F3F3 (Light Gray)
-- **Corner Radius:** 24px (Card) / 14px (Inputs & Buttons)
 
----
+## UI/UX reference — Hope ERP
 
-### Screen 1: Welcome & Landing (Hope, Inc. ERP)
-- **Top Header Banner:** Background `#000000`, Logo `#FFFFFF`, App Name `Hope, Inc. ERP` (Inter, Semi-Bold, `#FFFFFF`)
-- **Main Headline:** "Run your entire business with confidence" (Inter, Bold 700, `#000000`)
-- **Description:** "Hope, Inc. ERP unifies Customer Management..." (Inter, Regular 400, `#71717A`)
-- **"Sign In" Button:** Background `#F3F3F3`, Text: "Sign In" (Inter, Semi-Bold 600, `#000000`), Radius: 14px
-- **Divider:** "or" (Inter, Medium 500, `#000000`)
-- **"Register" Button:** Background `#F3F3F3`, Text: "Register" (Inter, Semi-Bold 600, `#000000`), Radius: 14px
+Expand a section to view its screens. Click an image to view it full size.
 
----
+### Overview
 
-### Screen 2: Login — "Welcome Back"
-- **Title:** "Welcome Back" (Inter, Bold 700, `#000000`)
-- **Subtitle:** "Login to your Hope, Inc. ERP account" (Inter, Regular 400, `#808080`)
-- **Field Labels:** "Emails", "Password" (Inter, Semi-Bold 600, `#000000`)
-- **Forgot Password Link:** "Forgot your password?" (Inter, Semi-Bold 600, `#000000`)
-- **Input Fields:** Background `#F3F3F3`, Radius: 14px, Border: None
-- **Primary Button:** "Login" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
-- **Social Login:** 3 buttons with `#F3F3F3` background
-- **Footer:** "Don't have an account? Sign up" (Inter, Semi-Bold 600, `#000000`)
+<details>
+<summary><strong>01 · Landing, roles & dashboard</strong> — 3 screens</summary>
 
----
+#### Landing
+![Landing](docs/ui-ux/images/01-landing.png)
 
-### Screen 3: Register — "Create an Account"
-- **Title:** "Create an Account" (Inter, Bold 700, `#000000`)
-- **Subtitle:** "Sign up to your Hope, Inc. ERP account" (Inter, Regular 400, `#808080`)
-- **Field Labels:** "Full Name", "Email", "Password", "Confirm Password" (Inter, Semi-Bold 600, `#000000`)
-- **Input Fields:** Background `#F3F3F3`, Radius: 14px
-- **Primary Button:** "Create Account" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
-- **Footer:** "Already have an account? Log in" (Inter, Semi-Bold 600, `#000000`)
+#### About and roles
+![About and roles](docs/ui-ux/images/02-about-and-roles.png)
 
----
+#### Dashboard
+![Dashboard](docs/ui-ux/images/03-dashboard.png)
 
-### Screen 4: Password Reset — "Reset your Password"
-- **Title:** "Reset your Password" (Inter, Bold 700, `#000000`)
-- **Subtitle:** "We'll email you a link to reset it" (Inter, Regular 400, `#808080`)
-- **Field Labels:** "Name", "Email" (Inter, Semi-Bold 600, `#000000`)
-- **Input Fields:** Background `#F3F3F3`, Radius: 14px
-- **Primary Button:** "Send reset link" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
-- **Footer:** "Remembered it? Back to log in" (Inter, Semi-Bold 600, `#000000`)
+</details>
 
-## S1-UIX-02
+### Authentication & access
 
-<img width="1920" height="1080" alt="Page" src="https://github.com/user-attachments/assets/6d9c876a-9e3d-4f2e-b974-8a4f6064382d" />
-<img width="1920" height="1080" alt="Log In" src="https://github.com/user-attachments/assets/a4053269-72d5-4677-9ac4-d560cb84a195" />
-<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/126c29e8-53f5-4625-bdaf-1aa261c92216" />
-<img width="1920" height="1080" alt="Reset Password" src="https://github.com/user-attachments/assets/0f9bdbc0-259a-4153-88fd-da64162514c6" />
+<details>
+<summary><strong>02 · Sign in, registration & password recovery</strong> — 6 screens</summary>
 
-## S1-UIX-03, S1-UIX-04
+#### Sign in
+![Sign in](docs/ui-ux/images/04-sign-in.png)
 
-<img width="1920" height="1080" alt="Homepage UI" src="https://github.com/user-attachments/assets/1f560a95-c44f-45af-bc91-4874b95295a7" />
-<img width="1920" height="1080" alt="Log In UI" src="https://github.com/user-attachments/assets/12dc02b5-28a8-4965-a918-5d6020b7799c" />
-<img width="1920" height="1080" alt="Register UI" src="https://github.com/user-attachments/assets/082de783-69f8-4339-9499-faa8401fd2f6" />
-<img width="1920" height="1080" alt="Reset Password UI" src="https://github.com/user-attachments/assets/24db7974-a386-40c6-b237-b96a4abd18a1" />
+#### Register
+![Register](docs/ui-ux/images/05-register.png)
+
+#### Forgot password
+![Forgot password](docs/ui-ux/images/06-forgot-password.png)
+
+#### Password reset — Awaiting approval
+![Password reset awaiting approval](docs/ui-ux/images/07-reset-awaiting-approval.png)
+
+#### Password reset — Approved
+![Password reset approved](docs/ui-ux/images/08-reset-approved.png)
+
+#### Password reset — Complete
+![Password reset complete](docs/ui-ux/images/09-reset-complete.png)
+
+</details>
+
+<details>
+<summary><strong>03 · Account approvals</strong> — 2 screens</summary>
+
+#### Superadmin
+![Account approvals for superadmin](docs/ui-ux/images/10-approvals-superadmin.png)
+
+#### Admin
+![Account approvals for admin](docs/ui-ux/images/11-approvals-admin.png)
+
+</details>
+
+### Workspace
+
+<details>
+<summary><strong>04 · Products, human resources & sales</strong> — 3 screens</summary>
+
+#### Products
+![Products](<img width="2003" height="1080" alt="Hope ERP · Landing" src="https://github.com/user-attachments/assets/e995e488-88ad-48b7-ab73-f2015bae8642" />
+)
+
+#### Human resources
+![Human resources](docs/ui-ux/images/13-human-resources.png)
+
+#### Sales
+![Sales](docs/ui-ux/images/14-sales.png)
+
+</details>
+
+<details>
+<summary><strong>05 · User management</strong> — 2 screens</summary>
+
+#### Superadmin
+![User management for superadmin](docs/ui-ux/images/15-users-superadmin.png)
+
+#### Admin
+![User management for admin](docs/ui-ux/images/16-users-admin.png)
+
+</details>
+
+### Sprint 2 · S2-UIX-01
+
+<details>
+<summary><strong>06 · Customer management</strong> — 5 screens</summary>
+
+**Scope:** Customer list, search and filters, add/edit forms,
+customer details, and delete confirmation.
+
+#### Customer list
+![Customer list](docs/ui-ux/images/17-customers-list.png)
+
+#### Add customer
+![Add customer](docs/ui-ux/images/18-customers-add.png)
+
+#### Edit customer
+![Edit customer](docs/ui-ux/images/19-customers-edit.png)
+
+#### Customer details
+![Customer details](docs/ui-ux/images/20-customers-details.png)
+
+#### Delete customer confirmation
+![Delete customer confirmation](docs/ui-ux/images/21-customers-delete-confirmation.png)
+
+</details>
+
 
 
 
