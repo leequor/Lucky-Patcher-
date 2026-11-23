@@ -131,22 +131,22 @@ Expand a section to view its screens. Click an image to view it full size.
 <summary><strong>02 · Sign in, registration & password recovery</strong> — 6 screens</summary>
 
 #### Sign in
-![Sign in](docs/ui-ux/images/04-sign-in.png)
+<img width="2003" height="1080" alt="Hope ERP · Sign in" src="https://github.com/user-attachments/assets/a57ddb63-f9d7-4194-ba47-fdf668bf702a" />
 
 #### Register
-![Register](docs/ui-ux/images/05-register.png)
+<img width="2003" height="1080" alt="Hope ERP · Register" src="https://github.com/user-attachments/assets/05f682d5-ac3f-4674-8c9f-4448080b844a" />
 
 #### Forgot password
-![Forgot password](docs/ui-ux/images/06-forgot-password.png)
+<img width="2003" height="1080" alt="Hope ERP · Forgot password" src="https://github.com/user-attachments/assets/94d6a91b-bb13-4d12-9116-1dfbb370f175" />
 
 #### Password reset — Awaiting approval
-![Password reset awaiting approval](docs/ui-ux/images/07-reset-awaiting-approval.png)
+<img width="2003" height="1080" alt="Hope ERP · Password reset · Awaiting approval" src="https://github.com/user-attachments/assets/711c58bf-7f62-46f0-aa1e-c339d53654d1" />
 
 #### Password reset — Approved
-![Password reset approved](docs/ui-ux/images/08-reset-approved.png)
+<img width="2003" height="1080" alt="Hope ERP · Password reset · Approved" src="https://github.com/user-attachments/assets/0d05a062-31a9-48ef-9cb8-2481f8f1a08d" />
 
 #### Password reset — Complete
-![Password reset complete](docs/ui-ux/images/09-reset-complete.png)
+<img width="2003" height="1080" alt="Hope ERP · Password reset · Complete" src="https://github.com/user-attachments/assets/97dbd86a-86ac-43bb-bbd8-904a26591d3e" />
 
 </details>
 
@@ -154,10 +154,10 @@ Expand a section to view its screens. Click an image to view it full size.
 <summary><strong>03 · Account approvals</strong> — 2 screens</summary>
 
 #### Superadmin
-![Account approvals for superadmin](docs/ui-ux/images/10-approvals-superadmin.png)
+<img width="2003" height="1080" alt="Hope ERP · Account approvals · Superadmin" src="https://github.com/user-attachments/assets/3b9175ba-94a7-408a-bc17-5ec8aed74b0e" />
 
 #### Admin
-![Account approvals for admin](docs/ui-ux/images/11-approvals-admin.png)
+<img width="2003" height="1080" alt="Hope ERP · Account approvals · Admin" src="https://github.com/user-attachments/assets/fc515b38-ac84-49ca-b43e-95a79e49d041" />
 
 </details>
 
@@ -167,13 +167,13 @@ Expand a section to view its screens. Click an image to view it full size.
 <summary><strong>04 · Products, human resources & sales</strong> — 3 screens</summary>
 
 #### Products
-![Products](<img width="2003" height="1080" alt="Hope ERP · Landing" src="https://github.com/user-attachments/assets/e995e488-88ad-48b7-ab73-f2015bae8642" />)
+<img width="2003" height="1080" alt="Hope ERP · Products" src="https://github.com/user-attachments/assets/5a42d79a-22d5-40f3-a954-d7043cf4433f" />
 
 #### Human resources
-![Human resources](docs/ui-ux/images/13-human-resources.png)
+<img width="2003" height="1080" alt="Hope ERP · Human Resources" src="https://github.com/user-attachments/assets/25312d7b-9e5f-4628-9ad1-0e189205961b" />
 
 #### Sales
-![Sales](docs/ui-ux/images/14-sales.png)
+<img width="2003" height="1080" alt="Hope ERP · Sales" src="https://github.com/user-attachments/assets/7e814984-4f5a-470c-85bd-e28bb8678ae7" />
 
 </details>
 
@@ -181,10 +181,10 @@ Expand a section to view its screens. Click an image to view it full size.
 <summary><strong>05 · User management</strong> — 2 screens</summary>
 
 #### Superadmin
-![User management for superadmin](docs/ui-ux/images/15-users-superadmin.png)
+<img width="2003" height="1080" alt="Hope ERP · User Management · Superadmin" src="https://github.com/user-attachments/assets/8a190510-0710-493d-81a0-76d53ffe1538" />
 
 #### Admin
-![User management for admin](docs/ui-ux/images/16-users-admin.png)
+<img width="2003" height="1080" alt="Hope ERP · User Management · Admin" src="https://github.com/user-attachments/assets/829950f0-def7-495d-af67-2cf8c8a785ff" />
 
 </details>
 
@@ -197,19 +197,19 @@ Expand a section to view its screens. Click an image to view it full size.
 customer details, and delete confirmation.
 
 #### Customer list
-![Customer list](docs/ui-ux/images/17-customers-list.png)
+<img width="2003" height="1080" alt="Hope ERP · Customers" src="https://github.com/user-attachments/assets/b6365c92-408e-402a-b88c-4d7bae2d9f11" />
 
 #### Add customer
-![Add customer](docs/ui-ux/images/18-customers-add.png)
+<img width="2003" height="1080" alt="Hope ERP · Add customer" src="https://github.com/user-attachments/assets/8a5fba22-60ae-4da5-b901-f6c09c3c2a07" />
 
 #### Edit customer
-![Edit customer](docs/ui-ux/images/19-customers-edit.png)
+<img width="2003" height="1080" alt="Hope ERP · Edit customer" src="https://github.com/user-attachments/assets/399ee34f-4057-44aa-9504-536a5de25a92" />
 
 #### Customer details
-![Customer details](docs/ui-ux/images/20-customers-details.png)
+<img width="2003" height="1080" alt="Hope ERP · Customer details" src="https://github.com/user-attachments/assets/1566f7ce-366a-442b-9b1d-a33de354344c" />
 
 #### Delete customer confirmation
-![Delete customer confirmation](docs/ui-ux/images/21-customers-delete-confirmation.png)
+<img width="2003" height="1080" alt="Hope ERP · Delete customer confirmation" src="https://github.com/user-attachments/assets/1a8ebee3-41cd-4a7a-9309-3d157c4b30d1" />
 
 </details>
 
