@@ -103,69 +103,116 @@ npm start
 - Keep database schema creation and sample data in their assigned tasks.
 - Never commit passwords, service-role keys, or other secrets.
 
-## S1-UIX-01
-### Global Styling
-- **Font Family:** Inter, sans-serif
-- **Modal Surface:** #FFFFFF (White)
-- **Primary Buttons / Dark:** #000000 (Black)
-- **Input Fields & Secondary Buttons:** #F3F3F3 (Light Gray)
-- **Corner Radius:** 24px (Card) / 14px (Inputs & Buttons)
 
----
+## UI/UX reference — Hope ERP
 
-### Screen 1: Welcome & Landing (Hope, Inc. ERP)
-- **Top Header Banner:** Background `#000000`, Logo `#FFFFFF`, App Name `Hope, Inc. ERP` (Inter, Semi-Bold, `#FFFFFF`)
-- **Main Headline:** "Run your entire business with confidence" (Inter, Bold 700, `#000000`)
-- **Description:** "Hope, Inc. ERP unifies Customer Management..." (Inter, Regular 400, `#71717A`)
-- **"Sign In" Button:** Background `#F3F3F3`, Text: "Sign In" (Inter, Semi-Bold 600, `#000000`), Radius: 14px
-- **Divider:** "or" (Inter, Medium 500, `#000000`)
-- **"Register" Button:** Background `#F3F3F3`, Text: "Register" (Inter, Semi-Bold 600, `#000000`), Radius: 14px
+Expand a section to view its screens. Click an image to view it full size.
 
----
+### Overview
 
-### Screen 2: Login — "Welcome Back"
-- **Title:** "Welcome Back" (Inter, Bold 700, `#000000`)
-- **Subtitle:** "Login to your Hope, Inc. ERP account" (Inter, Regular 400, `#808080`)
-- **Field Labels:** "Emails", "Password" (Inter, Semi-Bold 600, `#000000`)
-- **Forgot Password Link:** "Forgot your password?" (Inter, Semi-Bold 600, `#000000`)
-- **Input Fields:** Background `#F3F3F3`, Radius: 14px, Border: None
-- **Primary Button:** "Login" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
-- **Social Login:** 3 buttons with `#F3F3F3` background
-- **Footer:** "Don't have an account? Sign up" (Inter, Semi-Bold 600, `#000000`)
+<details>
+<summary><strong>01 · Landing, roles & dashboard</strong> — 3 screens</summary>
 
----
+#### Landing
+<img width="2003" height="1080" alt="Hope ERP · Landing" src="https://github.com/user-attachments/assets/e995e488-88ad-48b7-ab73-f2015bae8642" />
 
-### Screen 3: Register — "Create an Account"
-- **Title:** "Create an Account" (Inter, Bold 700, `#000000`)
-- **Subtitle:** "Sign up to your Hope, Inc. ERP account" (Inter, Regular 400, `#808080`)
-- **Field Labels:** "Full Name", "Email", "Password", "Confirm Password" (Inter, Semi-Bold 600, `#000000`)
-- **Input Fields:** Background `#F3F3F3`, Radius: 14px
-- **Primary Button:** "Create Account" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
-- **Footer:** "Already have an account? Log in" (Inter, Semi-Bold 600, `#000000`)
 
----
+#### About and roles
+<img width="2003" height="1080" alt="Hope ERP · About and roles" src="https://github.com/user-attachments/assets/87a8a2af-425b-46bb-af6c-f65f215a789a" />
 
-### Screen 4: Password Reset — "Reset your Password"
-- **Title:** "Reset your Password" (Inter, Bold 700, `#000000`)
-- **Subtitle:** "We'll email you a link to reset it" (Inter, Regular 400, `#808080`)
-- **Field Labels:** "Name", "Email" (Inter, Semi-Bold 600, `#000000`)
-- **Input Fields:** Background `#F3F3F3`, Radius: 14px
-- **Primary Button:** "Send reset link" (Background `#000000`, Text: `#FFFFFF`, Inter Semi-Bold 600, Radius: 14px)
-- **Footer:** "Remembered it? Back to log in" (Inter, Semi-Bold 600, `#000000`)
+#### Dashboard
+<img width="2003" height="1080" alt="Hope ERP · Dashboard" src="https://github.com/user-attachments/assets/d4871ba1-4925-403c-a0a9-640c2f374a6e" />
 
-## S1-UIX-02
+</details>
 
-<img width="1920" height="1080" alt="Page" src="https://github.com/user-attachments/assets/6d9c876a-9e3d-4f2e-b974-8a4f6064382d" />
-<img width="1920" height="1080" alt="Log In" src="https://github.com/user-attachments/assets/a4053269-72d5-4677-9ac4-d560cb84a195" />
-<img width="1920" height="1080" alt="Register" src="https://github.com/user-attachments/assets/126c29e8-53f5-4625-bdaf-1aa261c92216" />
-<img width="1920" height="1080" alt="Reset Password" src="https://github.com/user-attachments/assets/0f9bdbc0-259a-4153-88fd-da64162514c6" />
+### Authentication & access
 
-## S1-UIX-03, S1-UIX-04
+<details>
+<summary><strong>02 · Sign in, registration & password recovery</strong> — 6 screens</summary>
 
-<img width="1920" height="1080" alt="Homepage UI" src="https://github.com/user-attachments/assets/1f560a95-c44f-45af-bc91-4874b95295a7" />
-<img width="1920" height="1080" alt="Log In UI" src="https://github.com/user-attachments/assets/12dc02b5-28a8-4965-a918-5d6020b7799c" />
-<img width="1920" height="1080" alt="Register UI" src="https://github.com/user-attachments/assets/082de783-69f8-4339-9499-faa8401fd2f6" />
-<img width="1920" height="1080" alt="Reset Password UI" src="https://github.com/user-attachments/assets/24db7974-a386-40c6-b237-b96a4abd18a1" />
+#### Sign in
+<img width="2003" height="1080" alt="Hope ERP · Sign in" src="https://github.com/user-attachments/assets/a57ddb63-f9d7-4194-ba47-fdf668bf702a" />
+
+#### Register
+<img width="2003" height="1080" alt="Hope ERP · Register" src="https://github.com/user-attachments/assets/05f682d5-ac3f-4674-8c9f-4448080b844a" />
+
+#### Forgot password
+<img width="2003" height="1080" alt="Hope ERP · Forgot password" src="https://github.com/user-attachments/assets/94d6a91b-bb13-4d12-9116-1dfbb370f175" />
+
+#### Password reset — Awaiting approval
+<img width="2003" height="1080" alt="Hope ERP · Password reset · Awaiting approval" src="https://github.com/user-attachments/assets/711c58bf-7f62-46f0-aa1e-c339d53654d1" />
+
+#### Password reset — Approved
+<img width="2003" height="1080" alt="Hope ERP · Password reset · Approved" src="https://github.com/user-attachments/assets/0d05a062-31a9-48ef-9cb8-2481f8f1a08d" />
+
+#### Password reset — Complete
+<img width="2003" height="1080" alt="Hope ERP · Password reset · Complete" src="https://github.com/user-attachments/assets/97dbd86a-86ac-43bb-bbd8-904a26591d3e" />
+
+</details>
+
+<details>
+<summary><strong>03 · Account approvals</strong> — 2 screens</summary>
+
+#### Superadmin
+<img width="2003" height="1080" alt="Hope ERP · Account approvals · Superadmin" src="https://github.com/user-attachments/assets/3b9175ba-94a7-408a-bc17-5ec8aed74b0e" />
+
+#### Admin
+<img width="2003" height="1080" alt="Hope ERP · Account approvals · Admin" src="https://github.com/user-attachments/assets/fc515b38-ac84-49ca-b43e-95a79e49d041" />
+
+</details>
+
+### Workspace
+
+<details>
+<summary><strong>04 · Products, human resources & sales</strong> — 3 screens</summary>
+
+#### Products
+<img width="2003" height="1080" alt="Hope ERP · Products" src="https://github.com/user-attachments/assets/5a42d79a-22d5-40f3-a954-d7043cf4433f" />
+
+#### Human resources
+<img width="2003" height="1080" alt="Hope ERP · Human Resources" src="https://github.com/user-attachments/assets/25312d7b-9e5f-4628-9ad1-0e189205961b" />
+
+#### Sales
+<img width="2003" height="1080" alt="Hope ERP · Sales" src="https://github.com/user-attachments/assets/7e814984-4f5a-470c-85bd-e28bb8678ae7" />
+
+</details>
+
+<details>
+<summary><strong>05 · User management</strong> — 2 screens</summary>
+
+#### Superadmin
+<img width="2003" height="1080" alt="Hope ERP · User Management · Superadmin" src="https://github.com/user-attachments/assets/8a190510-0710-493d-81a0-76d53ffe1538" />
+
+#### Admin
+<img width="2003" height="1080" alt="Hope ERP · User Management · Admin" src="https://github.com/user-attachments/assets/829950f0-def7-495d-af67-2cf8c8a785ff" />
+
+</details>
+
+### Sprint 2 · S2-UIX-01
+
+<details>
+<summary><strong>06 · Customer management</strong> — 5 screens</summary>
+
+**Scope:** Customer list, search and filters, add/edit forms,
+customer details, and delete confirmation.
+
+#### Customer list
+<img width="2003" height="1080" alt="Hope ERP · Customers" src="https://github.com/user-attachments/assets/b6365c92-408e-402a-b88c-4d7bae2d9f11" />
+
+#### Add customer
+<img width="2003" height="1080" alt="Hope ERP · Add customer" src="https://github.com/user-attachments/assets/8a5fba22-60ae-4da5-b901-f6c09c3c2a07" />
+
+#### Edit customer
+<img width="2003" height="1080" alt="Hope ERP · Edit customer" src="https://github.com/user-attachments/assets/399ee34f-4057-44aa-9504-536a5de25a92" />
+
+#### Customer details
+<img width="2003" height="1080" alt="Hope ERP · Customer details" src="https://github.com/user-attachments/assets/1566f7ce-366a-442b-9b1d-a33de354344c" />
+
+#### Delete customer confirmation
+<img width="2003" height="1080" alt="Hope ERP · Delete customer confirmation" src="https://github.com/user-attachments/assets/1a8ebee3-41cd-4a7a-9309-3d157c4b30d1" />
+
+</details>
+
 
 
 
