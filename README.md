@@ -114,14 +114,14 @@ Expand a section to view its screens. Click an image to view it full size.
 <summary><strong>01 · Landing, roles & dashboard</strong> — 3 screens</summary>
 
 #### Landing
-![Landing]<img width="2003" height="1080" alt="Hope ERP · Landing" src="https://github.com/user-attachments/assets/e995e488-88ad-48b7-ab73-f2015bae8642" />
+<img width="2003" height="1080" alt="Hope ERP · Landing" src="https://github.com/user-attachments/assets/e995e488-88ad-48b7-ab73-f2015bae8642" />
 
 
 #### About and roles
-![About and roles](docs/ui-ux/images/02-about-and-roles.png)
+<img width="2003" height="1080" alt="Hope ERP · About and roles" src="https://github.com/user-attachments/assets/87a8a2af-425b-46bb-af6c-f65f215a789a" />
 
 #### Dashboard
-![Dashboard](docs/ui-ux/images/03-dashboard.png)
+<img width="2003" height="1080" alt="Hope ERP · Dashboard" src="https://github.com/user-attachments/assets/d4871ba1-4925-403c-a0a9-640c2f374a6e" />
 
 </details>
 
