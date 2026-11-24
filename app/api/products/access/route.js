@@ -15,5 +15,9 @@ export async function GET(request) {
     canEditProducts: access.rights.edit,
     canDeleteProducts: access.rights.delete,
     canRestoreProducts: access.rights.restore,
+    canViewProductPrices: access.rights.priceView,
+    canAddProductPrices: access.rights.priceAdd,
+    canEditProductPrices: access.rights.priceEdit,
+    canDeleteProductPrices: access.rights.priceDelete,
   });
 }

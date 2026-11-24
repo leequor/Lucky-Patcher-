@@ -37,6 +37,8 @@ Users with the `customers.view` right can open the Customers page from the dashb
 
 Users with the `products.view` right can open the Products page from the dashboard. The list supports code/description search, unit/status filters, pagination, and displays the current price. The app expects the database workstream's `products_active` view to provide the current-price value as of today; verify that its RLS behavior matches the server-side Product view-right check.
 
+Users with the `products.price.view` right can expand a product's dated price history. The `products.price.add`, `products.price.edit`, and `products.price.delete` rights control price mutations independently of product edits. The `20261124170000_add_product_price_history.sql` migration adds the `product_prices` table, RLS policies, unique product/effective-date validation, current-price synchronization, and audit-log entries. Existing product prices are seeded as effective today; a new product's initial price is recorded as a dated price, and later product edits cannot change the price directly. The migration expects the database workstream's `products` table (with UUID `id` and numeric `current_price`), `users`, `user_rights`, and `audit_log` tables to exist first.
+
 Users who forget their password can request a reset email at `/forgot-password` and choose a new password at `/reset-password`. In the Supabase dashboard, add the app's origin to the Auth redirect URL allow list; reset emails redirect to `<app-origin>/reset-password`. The reset form requires an active Supabase recovery session, so expired or already-used links must be requested again.
 
 To create a production build and run it locally:

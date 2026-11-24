@@ -17,15 +17,12 @@ export async function GET(request) {
     return Response.json({ error: parsed.error }, { status: 400 });
   }
 
-  const authorization = await authorizeProductRight(
-    request,
-    status === "deleted" ? "restore" : "view",
-  );
+  const { search, unit, status, page, pageSize } = parsed.filters;
+  const authorization = await authorizeProductRight(request, status === "deleted" ? "restore" : "view");
   if (authorization.response) {
     return authorization.response;
   }
 
-  const { search, unit, status, page, pageSize } = parsed.filters;
   const firstRow = (page - 1) * pageSize;
   if (!Number.isSafeInteger(firstRow) || !Number.isSafeInteger(firstRow + pageSize - 1)) {
     return Response.json(

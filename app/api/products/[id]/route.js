@@ -31,10 +31,13 @@ export async function PATCH(request, { params }) {
     );
   }
 
+  const update = { ...validation.value };
+  delete update.current_price;
+
   try {
     const { data, error } = await authorization.supabase
       .from("products")
-      .update(validation.value)
+      .update(update)
       .eq("id", id)
       .select("id, code, description, unit, current_price, status")
       .maybeSingle();
