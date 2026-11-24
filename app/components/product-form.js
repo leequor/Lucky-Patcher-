@@ -191,19 +191,25 @@ export default function ProductForm({
 
         <div>
           <label className="text-sm font-medium text-slate-700" htmlFor="product-price">
-            Current price
+            {mode === "edit" ? "Current price" : "Initial price"}
           </label>
           <input
             aria-describedby={errors.current_price ? "product-price-error" : undefined}
             aria-invalid={Boolean(errors.current_price)}
-            className={inputClass}
             id="product-price"
             inputMode="decimal"
             name="current_price"
             onChange={updateField}
             placeholder="0.00"
+            readOnly={mode === "edit"}
+            className={`${inputClass}${mode === "edit" ? " bg-slate-50" : ""}`}
             value={values.current_price}
           />
+          {mode === "edit" && (
+            <p className="mt-1 text-xs text-slate-500">
+              Current price is managed in the product&apos;s price history.
+            </p>
+          )}
           {errors.current_price && (
             <p className="mt-1 text-sm text-rose-700" id="product-price-error">
               {errors.current_price}

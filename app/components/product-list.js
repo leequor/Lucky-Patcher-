@@ -3,8 +3,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { DEFAULT_PAGE_SIZE } from "../lib/list-query.mjs";
+import PriceHistory from "./price-history";
 import ProductForm from "./product-form";
 import { getSupabaseClient } from "./supabase-client";
 
@@ -39,6 +40,7 @@ export default function ProductList() {
   const [notice, setNotice] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
   const [pendingDelete, setPendingDelete] = useState(null);
+  const [expandedPriceProductId, setExpandedPriceProductId] = useState(null);
   const [actionError, setActionError] = useState("");
   const [isMutating, setIsMutating] = useState(false);
   const [state, setState] = useState({ kind: "loading", message: "" });
@@ -116,6 +118,12 @@ export default function ProductList() {
           edit: result.canEditProducts,
           delete: result.canDeleteProducts,
           restore: result.canRestoreProducts,
+          prices: {
+            view: result.canViewProductPrices,
+            add: result.canAddProductPrices,
+            edit: result.canEditProductPrices,
+            delete: result.canDeleteProductPrices,
+          },
         });
         if (result.canViewProducts !== true) {
           setState({
@@ -274,7 +282,9 @@ export default function ProductList() {
   }
 
   const pageCount = Math.max(1, Math.ceil(total / DEFAULT_PAGE_SIZE));
-  const hasActionColumn = Boolean(rights?.edit || rights?.delete || rights?.restore);
+  const hasActionColumn = Boolean(
+    rights?.edit || rights?.delete || rights?.restore || rights?.prices?.view,
+  );
 
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-6 text-slate-800 sm:px-8 lg:px-12">
@@ -472,7 +482,8 @@ export default function ProductList() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {products.map((product) => (
-                      <tr key={product.id} className="hover:bg-slate-50">
+                      <Fragment key={product.id}>
+                      <tr className="hover:bg-slate-50">
                         <td className="whitespace-nowrap px-5 py-4 font-medium text-slate-900">
                           {product.code}
                         </td>
@@ -532,10 +543,38 @@ export default function ProductList() {
                                   Restore
                                 </button>
                               )}
+                              {rights?.prices?.view && filters.status !== "deleted" && (
+                                <button
+                                  className="font-medium text-indigo-700 hover:text-indigo-900"
+                                  aria-expanded={expandedPriceProductId === product.id}
+                                  onClick={() => {
+                                    setExpandedPriceProductId((current) =>
+                                      current === product.id ? null : product.id,
+                                    );
+                                  }}
+                                  type="button"
+                                >
+                                  {expandedPriceProductId === product.id ? "Hide prices" : "Prices"}
+                                </button>
+                              )}
                             </div>
                           </td>
                         )}
                       </tr>
+                      {expandedPriceProductId === product.id && rights?.prices?.view && (
+                        <tr>
+                          <td className="px-4 py-4 sm:px-6" colSpan={hasActionColumn ? 6 : 5}>
+                            <PriceHistory
+                              accessToken={accessToken}
+                              product={product}
+                              rights={rights.prices}
+                              onAuthExpired={() => router.replace("/login")}
+                              onPricesChanged={() => setReloadKey((current) => current + 1)}
+                            />
+                          </td>
+                        </tr>
+                      )}
+                      </Fragment>
                     ))}
                     {state.kind === "ready" && products.length === 0 && (
                       <tr>

@@ -22,7 +22,6 @@ export async function GET(request) {
     request,
     status === "deleted" ? "restore" : "view",
   );
-
   if (authorization.response) {
     return authorization.response;
   }
