@@ -1,5 +1,4 @@
 import { authorizeProductRight } from "../../../lib/product-access";
-import { runProductLifecycleAction } from "../../../lib/product-lifecycle.mjs";
 import { validateProductInput } from "../../../lib/product-validation.mjs";
 
 export const runtime = "nodejs";
@@ -31,15 +30,16 @@ export async function PATCH(request, { params }) {
     );
   }
 
-  const update = { ...validation.value };
-  delete update.current_price;
-
   try {
     const { data, error } = await authorization.supabase
-      .from("products")
-      .update(update)
-      .eq("id", id)
-      .select("id, code, description, unit, current_price, status")
+      .from("product")
+      .update({
+        prodcode: validation.value.code,
+        description: validation.value.description,
+        unit: validation.value.unit,
+      })
+      .eq("prodcode", id)
+      .select("id:prodcode, code:prodcode, description, unit, is_deleted, stamp")
       .maybeSingle();
 
     if (error?.code === "23505") {
@@ -56,7 +56,14 @@ export async function PATCH(request, { params }) {
       return Response.json({ error: "Product was not found or is not available." }, { status: 404 });
     }
 
-    return Response.json({ product: data });
+    return Response.json({
+      product: {
+        ...data,
+        current_price: null,
+        status: data.is_deleted ? "Deleted" : "Active",
+        deleted_at: data.is_deleted ? true : null,
+      },
+    });
   } catch (error) {
     console.error("Could not reach Supabase while updating a product.", error);
     return Response.json(
@@ -77,5 +84,31 @@ export async function DELETE(request, { params }) {
     return Response.json({ error: "Choose a valid product to delete." }, { status: 400 });
   }
 
-  return runProductLifecycleAction(authorization.supabase, "delete", id);
+  try {
+    const { data, error } = await authorization.supabase
+      .from("product")
+      .update({ is_deleted: true })
+      .eq("prodcode", id)
+      .eq("is_deleted", false)
+      .select("id:prodcode, code:prodcode, description, unit, is_deleted, stamp")
+      .maybeSingle();
+
+    if (error) {
+      console.error("Could not delete product.", error);
+      return Response.json({ error: "Product could not be deleted." }, { status: 500 });
+    }
+    if (!data) {
+      return Response.json({ error: "Product was not found or is already deleted." }, { status: 404 });
+    }
+
+    return Response.json({
+      product: { ...data, status: "Deleted", deleted_at: true },
+    });
+  } catch (error) {
+    console.error("Could not reach Supabase while deleting a product.", error);
+    return Response.json(
+      { error: "Product could not be deleted. Check your connection and try again." },
+      { status: 502 },
+    );
+  }
 }

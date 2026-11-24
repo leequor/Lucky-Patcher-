@@ -11,7 +11,7 @@ import { getSupabaseClient } from "./supabase-client";
 
 function formatPrice(value) {
   if (value === null || value === undefined || value === "") {
-    return "—";
+    return "No price set";
   }
 
   const amount = Number(value);

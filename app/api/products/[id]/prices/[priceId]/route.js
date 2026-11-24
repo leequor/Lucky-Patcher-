@@ -1,13 +1,27 @@
 import { authorizeProductPriceRight } from "../../../../../lib/product-access";
-import { validatePriceInput } from "../../../../../lib/price-validation.mjs";
+import {
+  isValidEffectiveDate,
+  validatePriceInput,
+} from "../../../../../lib/price-validation.mjs";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
 function hasValidIds(productId, priceId) {
-  return UUID_PATTERN.test(productId || "") && UUID_PATTERN.test(priceId || "");
+  return (
+    typeof productId === "string" &&
+    productId.length > 0 &&
+    productId.length <= 20 &&
+    isValidEffectiveDate(priceId)
+  );
+}
+
+function toPriceHistoryRow(row) {
+  return {
+    id: row.effdate,
+    amount: row.unitprice,
+    effective_date: row.effdate,
+  };
 }
 
 export async function PATCH(request, { params }) {
@@ -38,11 +52,15 @@ export async function PATCH(request, { params }) {
 
   try {
     const { data, error } = await authorization.supabase
-      .from("product_prices")
-      .update(validation.value)
-      .eq("product_id", id)
-      .eq("id", priceId)
-      .select("id, product_id, amount, effective_date, created_at")
+      .from("pricehist")
+      .update({
+        unitprice: validation.value.amount,
+        effdate: validation.value.effective_date,
+      })
+      .eq("prodcode", id)
+      .eq("effdate", priceId)
+      .eq("is_deleted", false)
+      .select("prodcode, unitprice, effdate")
       .maybeSingle();
 
     if (error?.code === "23505") {
@@ -62,7 +80,7 @@ export async function PATCH(request, { params }) {
       return Response.json({ error: "Price was not found for this product." }, { status: 404 });
     }
 
-    return Response.json({ price: data });
+    return Response.json({ price: toPriceHistoryRow(data) });
   } catch (error) {
     console.error("Could not reach Supabase while updating a product price.", error);
     return Response.json(
@@ -85,11 +103,12 @@ export async function DELETE(request, { params }) {
 
   try {
     const { data, error } = await authorization.supabase
-      .from("product_prices")
-      .delete()
-      .eq("product_id", id)
-      .eq("id", priceId)
-      .select("id, product_id, amount, effective_date")
+      .from("pricehist")
+      .update({ is_deleted: true })
+      .eq("prodcode", id)
+      .eq("effdate", priceId)
+      .eq("is_deleted", false)
+      .select("prodcode, unitprice, effdate")
       .maybeSingle();
 
     if (error) {
@@ -100,7 +119,7 @@ export async function DELETE(request, { params }) {
       return Response.json({ error: "Price was not found for this product." }, { status: 404 });
     }
 
-    return Response.json({ price: data });
+    return Response.json({ price: toPriceHistoryRow(data) });
   } catch (error) {
     console.error("Could not reach Supabase while deleting a product price.", error);
     return Response.json(

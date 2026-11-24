@@ -4,10 +4,16 @@ import { validatePriceInput } from "../../../../lib/price-validation.mjs";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
 function isValidProductId(id) {
-  return typeof id === "string" && UUID_PATTERN.test(id);
+  return typeof id === "string" && id.length > 0 && id.length <= 20;
+}
+
+function toPriceHistoryRow(row) {
+  return {
+    id: row.effdate,
+    amount: row.unitprice,
+    effective_date: row.effdate,
+  };
 }
 
 export async function GET(request, { params }) {
@@ -23,11 +29,11 @@ export async function GET(request, { params }) {
 
   try {
     const { data, error } = await authorization.supabase
-      .from("product_prices")
-      .select("id, product_id, amount, effective_date, created_at")
-      .eq("product_id", id)
-      .order("effective_date", { ascending: false })
-      .order("created_at", { ascending: false });
+      .from("pricehist")
+      .select("prodcode, unitprice, effdate")
+      .eq("prodcode", id)
+      .eq("is_deleted", false)
+      .order("effdate", { ascending: false });
 
     if (error) {
       console.error("Could not load product price history.", error);
@@ -37,7 +43,7 @@ export async function GET(request, { params }) {
       );
     }
 
-    return Response.json({ prices: data || [] });
+    return Response.json({ prices: (data || []).map(toPriceHistoryRow) });
   } catch (error) {
     console.error("Could not reach Supabase while loading product price history.", error);
     return Response.json(
@@ -75,9 +81,14 @@ export async function POST(request, { params }) {
 
   try {
     const { data, error } = await authorization.supabase
-      .from("product_prices")
-      .insert({ ...validation.value, product_id: id })
-      .select("id, product_id, amount, effective_date, created_at")
+      .from("pricehist")
+      .insert({
+        prodcode: id,
+        unitprice: validation.value.amount,
+        effdate: validation.value.effective_date,
+        is_deleted: false,
+      })
+      .select("prodcode, unitprice, effdate")
       .single();
 
     if (error?.code === "23505") {
@@ -89,15 +100,12 @@ export async function POST(request, { params }) {
         { status: 409 },
       );
     }
-    if (error?.code === "23503") {
-      return Response.json({ error: "Product was not found." }, { status: 404 });
-    }
     if (error) {
       console.error("Could not add a product price.", error);
       return Response.json({ error: "Price could not be added." }, { status: 500 });
     }
 
-    return Response.json({ price: data }, { status: 201 });
+    return Response.json({ price: toPriceHistoryRow(data) }, { status: 201 });
   } catch (error) {
     console.error("Could not reach Supabase while adding a product price.", error);
     return Response.json(
