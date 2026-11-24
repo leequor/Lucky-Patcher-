@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -340,7 +341,7 @@ export default function CustomerList() {
                   className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                   maxLength={100}
                   onChange={(event) => setSearchInput(event.target.value)}
-                  placeholder="Code, name, or contact"
+                  placeholder="Code, name, or address"
                   type="search"
                   value={searchInput}
                 />
@@ -354,8 +355,7 @@ export default function CustomerList() {
                   value={statusInput}
                 >
                   <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="all">All statuses</option>
+                  <option value="all">All records</option>
                   {rights?.restore && <option value="deleted">Deleted</option>}
                 </select>
               </label>
@@ -401,7 +401,7 @@ export default function CustomerList() {
                     <tr>
                       <th className="px-5 py-3 font-semibold" scope="col">Code</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Name</th>
-                      <th className="px-5 py-3 font-semibold" scope="col">Contact</th>
+                      <th className="px-5 py-3 font-semibold" scope="col">Address</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Pay terms</th>
                       <th className="px-5 py-3 font-semibold" scope="col">Status</th>
                       {hasActionColumn && (
@@ -418,21 +418,19 @@ export default function CustomerList() {
                           {customer.code}
                         </td>
                         <td className="px-5 py-4 text-slate-800">{customer.name}</td>
-                        <td className="px-5 py-4 text-slate-600">{customer.contact || "—"}</td>
+                        <td className="px-5 py-4 text-slate-600">{customer.address || "—"}</td>
                         <td className="whitespace-nowrap px-5 py-4 text-slate-600">
                           {customer.pay_terms || "—"}
                         </td>
                         <td className="px-5 py-4">
                           <span
                             className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                              customer.deleted_at
+                              customer.is_deleted
                                 ? "bg-rose-50 text-rose-700"
-                                : customer.status === "active"
-                                ? "bg-emerald-50 text-emerald-700"
-                                : "bg-slate-100 text-slate-600"
+                                : "bg-emerald-50 text-emerald-700"
                             }`}
                           >
-                            {customer.deleted_at ? "Deleted" : customer.status}
+                            {customer.is_deleted ? "Deleted" : "Active"}
                           </span>
                         </td>
                         {hasActionColumn && (
@@ -450,7 +448,7 @@ export default function CustomerList() {
                                   Edit
                                 </button>
                               )}
-                              {rights?.delete && filters.status !== "deleted" && (
+                              {rights?.delete && filters.status !== "deleted" && !customer.is_deleted && (
                                 <button
                                   className="font-medium text-rose-700 hover:text-rose-900"
                                   onClick={() => {

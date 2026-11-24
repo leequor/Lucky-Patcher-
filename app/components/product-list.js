@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -391,7 +392,6 @@ export default function ProductList() {
                   value={statusInput}
                 >
                   <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
                   <option value="all">All statuses</option>
                   {rights?.restore && <option value="deleted">Deleted</option>}
                 </select>
@@ -578,7 +578,10 @@ export default function ProductList() {
                     ))}
                     {state.kind === "ready" && products.length === 0 && (
                       <tr>
-                        <td className="px-5 py-12 text-center text-slate-500"                         colSpan={hasActionColumn ? 6 : 5}>
+                        <td
+                          className="px-5 py-12 text-center text-slate-500"
+                          colSpan={hasActionColumn ? 6 : 5}
+                        >
                           No products match these filters.
                         </td>
                       </tr>
