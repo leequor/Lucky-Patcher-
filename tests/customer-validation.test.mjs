@@ -10,7 +10,7 @@ describe("customer form validation", () => {
     const result = validateCustomerInput({
       code: " C-001 ",
       name: " Acme Inc. ",
-      contact: " 555-0100 ",
+      address: " 123 Main St ",
       pay_terms: CUSTOMER_PAY_TERMS[0],
     });
 
@@ -18,7 +18,7 @@ describe("customer form validation", () => {
       value: {
         code: "C-001",
         name: "Acme Inc.",
-        contact: "555-0100",
+        address: "123 Main St",
         pay_terms: "Net 30",
       },
     });
@@ -40,11 +40,11 @@ describe("customer form validation", () => {
     const result = validateCustomerInput({
       code: "C-001",
       name: "Acme Inc.",
-      contact: 123,
+      address: 123,
       pay_terms: 30,
     });
 
-    assert.equal(result.errors.contact, "Enter a valid contact.");
+    assert.equal(result.errors.address, "Enter a valid address.");
     assert.equal(result.errors.pay_terms, "Choose one of the listed payment terms.");
   });
 
@@ -52,11 +52,11 @@ describe("customer form validation", () => {
     const result = validateCustomerInput({
       code: "C".repeat(11),
       name: "N".repeat(101),
-      contact: "1".repeat(201),
+      address: "1".repeat(201),
     });
 
     assert.equal(result.errors.code, "Customer code must be 10 characters or fewer.");
     assert.equal(result.errors.name, "Customer name must be 100 characters or fewer.");
-    assert.equal(result.errors.contact, "Contact must be 200 characters or fewer.");
+    assert.equal(result.errors.address, "Address must be 200 characters or fewer.");
   });
 });

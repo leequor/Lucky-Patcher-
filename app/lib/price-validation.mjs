@@ -1,3 +1,12 @@
+export function isValidEffectiveDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
+
 export function validatePriceInput(input) {
   const amountText =
     typeof input?.amount === "string"
@@ -12,16 +21,9 @@ export function validatePriceInput(input) {
   if (!/^\d{1,10}(?:\.\d{1,2})?$/.test(amountText)) {
     errors.amount = "Enter a non-negative amount with at most two decimal places.";
   }
-
-  const date = new Date(`${effectiveDate}T00:00:00.000Z`);
-  if (
-    !/^\d{4}-\d{2}-\d{2}$/.test(effectiveDate) ||
-    Number.isNaN(date.getTime()) ||
-    date.toISOString().slice(0, 10) !== effectiveDate
-  ) {
+  if (!isValidEffectiveDate(effectiveDate)) {
     errors.effective_date = "Enter a valid effective date.";
   }
-
   if (Object.keys(errors).length > 0) {
     return { errors };
   }

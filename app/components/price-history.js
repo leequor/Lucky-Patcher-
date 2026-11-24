@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { validatePriceInput } from "../lib/price-validation.mjs";
 
 function formatAmount(value) {
+  if (value === null || value === undefined || value === "") {
+    return "No price set";
+  }
+
   const amount = Number(value);
   if (!Number.isFinite(amount)) {
     return "Price unavailable";
@@ -200,6 +204,9 @@ export default function PriceHistory({
         <div>
           <h3 className="font-semibold text-slate-900">Price history</h3>
           <p className="text-sm text-slate-600">{product.description}</p>
+          <p className="mt-1 text-sm font-medium text-slate-700">
+            Current price as of today: {formatAmount(product.current_price)}
+          </p>
         </div>
         {rights.add && !isFormOpen && (
           <button

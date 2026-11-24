@@ -9,6 +9,15 @@ import { validateProductInput } from "../../lib/product-validation.mjs";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function formatProduct(product, currentPrice = null) {
+  return {
+    ...product,
+    current_price: currentPrice,
+    status: product.is_deleted ? "Deleted" : "Active",
+    deleted_at: product.is_deleted ? true : null,
+  };
+}
+
 export async function GET(request) {
   const parsed = parseProductListParams(new URL(request.url).searchParams);
 
@@ -82,11 +91,9 @@ export async function GET(request) {
 
     if (productCodes.length > 0) {
       const { data: priceRows, error: priceError } = await authorization.supabase
-        .from("pricehist")
-        .select("prodcode, unitprice, effdate")
+        .from("product_current_price")
+        .select("prodcode, unitprice")
         .in("prodcode", productCodes)
-        .eq("is_deleted", false)
-        .order("effdate", { ascending: false });
 
       if (priceError) {
         console.error("Could not load product prices.", priceError);
@@ -98,18 +105,13 @@ export async function GET(request) {
       }
 
       for (const price of priceRows || []) {
-        if (!currentPrices.has(price.prodcode)) {
-          currentPrices.set(price.prodcode, price.unitprice);
-        }
+        currentPrices.set(price.prodcode, price.unitprice);
       }
     }
 
-    const products = (data || []).map((product) => ({
-      ...product,
-      current_price: currentPrices.get(product.code) ?? null,
-      status: product.is_deleted ? "Deleted" : "Active",
-      deleted_at: product.is_deleted ? true : null,
-    }));
+    const products = (data || []).map((product) =>
+      formatProduct(product, currentPrices.get(product.code) ?? null),
+    );
 
     return Response.json({
       products,
@@ -156,9 +158,14 @@ export async function POST(request) {
 
   try {
     const { data, error } = await authorization.supabase
-      .from("products")
-      .insert(validation.value)
-      .select("id, code, description, unit, current_price, status")
+      .from("product")
+      .insert({
+        prodcode: validation.value.code,
+        description: validation.value.description,
+        unit: validation.value.unit,
+        is_deleted: false,
+      })
+      .select("id:prodcode, code:prodcode, description, unit, is_deleted, stamp")
       .single();
 
     if (error?.code === "23505") {
@@ -180,7 +187,7 @@ export async function POST(request) {
       );
     }
 
-    return Response.json({ product: data }, { status: 201 });
+    return Response.json({ product: formatProduct(data) }, { status: 201 });
   } catch (error) {
     console.error("Could not reach Supabase while creating a product.", error);
 

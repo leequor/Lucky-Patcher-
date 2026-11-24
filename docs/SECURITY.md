@@ -27,7 +27,7 @@ The Customer module validates the Supabase access token and checks the matching 
 
 The Product module validates the Supabase access token and checks the `products.view` right on the server before returning product records. The database-provided product view must not bypass the intended RLS access rules.
 
-Product price history uses the separate `products.price.view`, `products.price.add`, `products.price.edit`, and `products.price.delete` rights. The `product_prices` table has RLS policies for those rights; database triggers synchronize the current product price and write each price mutation to `audit_log` with the authenticated actor.
+Product price history uses the separate `products.price.view`, `products.price.add`, `products.price.edit`, and `products.price.delete` rights. Each price API mutation checks its matching right on the server. Database triggers record customer, product, and price-history changes in `audit_log` with the authenticated actor.
 
 ## 3. Demo Accounts
 

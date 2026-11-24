@@ -27,12 +27,12 @@ describe("customer list query parsing", () => {
 
   it("accepts status, payment-term, and pagination filters", () => {
     const result = parseCustomerListParams(
-      new URLSearchParams("status=inactive&payTerms=Net%2030&page=3&pageSize=10"),
+      new URLSearchParams("status=all&payTerms=Net%2030&page=3&pageSize=10"),
     );
 
     assert.deepEqual(result.filters, {
       search: "",
-      status: "inactive",
+      status: "all",
       payTerms: "Net 30",
       page: 3,
       pageSize: 10,

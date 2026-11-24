@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  PRODUCT_STATUSES,
   PRODUCT_UNITS,
   validateProductInput,
 } from "../lib/product-validation.mjs";
@@ -11,8 +10,6 @@ const EMPTY_PRODUCT = {
   code: "",
   description: "",
   unit: "",
-  current_price: "",
-  status: "active",
 };
 
 function getProductValues(product) {
@@ -21,11 +18,6 @@ function getProductValues(product) {
         code: product.code || "",
         description: product.description || "",
         unit: product.unit || "",
-        current_price:
-          product.current_price === null || product.current_price === undefined
-            ? ""
-            : String(product.current_price),
-        status: product.status || "active",
       }
     : EMPTY_PRODUCT;
 }
@@ -186,59 +178,6 @@ export default function ProductForm({
             <p className="mt-1 text-sm text-rose-700" id="product-description-error">
               {errors.description}
             </p>
-          )}
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-slate-700" htmlFor="product-price">
-            {mode === "edit" ? "Current price" : "Initial price"}
-          </label>
-          <input
-            aria-describedby={errors.current_price ? "product-price-error" : undefined}
-            aria-invalid={Boolean(errors.current_price)}
-            id="product-price"
-            inputMode="decimal"
-            name="current_price"
-            onChange={updateField}
-            placeholder="0.00"
-            readOnly={mode === "edit"}
-            className={`${inputClass}${mode === "edit" ? " bg-slate-50" : ""}`}
-            value={values.current_price}
-          />
-          {mode === "edit" && (
-            <p className="mt-1 text-xs text-slate-500">
-              Current price is managed in the product&apos;s price history.
-            </p>
-          )}
-          {errors.current_price && (
-            <p className="mt-1 text-sm text-rose-700" id="product-price-error">
-              {errors.current_price}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-slate-700" htmlFor="product-status">
-            Status <span aria-hidden="true">*</span>
-          </label>
-          <select
-            aria-describedby={errors.status ? "product-status-error" : undefined}
-            aria-invalid={Boolean(errors.status)}
-            className={`${inputClass} bg-white`}
-            id="product-status"
-            name="status"
-            onChange={updateField}
-            required
-            value={values.status}
-          >
-            {PRODUCT_STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {status === "active" ? "Active" : "Inactive"}
-              </option>
-            ))}
-          </select>
-          {errors.status && (
-            <p className="mt-1 text-sm text-rose-700" id="product-status-error">{errors.status}</p>
           )}
         </div>
 
