@@ -188,7 +188,7 @@ Expand a section to view its screens. Click an image to view it full size.
 
 </details>
 
-### Customers
+### Customer Relations
 
 <details>
 <summary><strong>06 · Customer management</strong> — 5 screens</summary>
