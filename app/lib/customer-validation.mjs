@@ -1,4 +1,10 @@
-export const CUSTOMER_PAY_TERMS = ["Net 30", "COD", "Prepaid"];
+
+export const CUSTOMER_PAY_TERMS = [
+  "Net 30",
+  "Net 45",
+  "COD",
+  "Prepaid",
+];
 
 export function validateCustomerInput(input) {
   const code = typeof input?.code === "string" ? input.code.trim() : "";

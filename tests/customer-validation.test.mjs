@@ -1,3 +1,4 @@
+
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -24,11 +25,23 @@ describe("customer form validation", () => {
     });
   });
 
+  it("accepts all approved payment terms", () => {
+    for (const term of CUSTOMER_PAY_TERMS) {
+      const result = validateCustomerInput({
+        code: "C-001",
+        name: "Acme Inc.",
+        pay_terms: term,
+      });
+
+      assert.equal(result.value.pay_terms, term);
+    }
+  });
+
   it("requires code and name and rejects unsupported pay terms", () => {
     const result = validateCustomerInput({
       code: " ",
       name: "",
-      pay_terms: "Net 45",
+      pay_terms: "Invalid Term",
     });
 
     assert.equal(result.errors.code, "Customer code is required.");
