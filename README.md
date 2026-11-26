@@ -38,6 +38,8 @@ Users with the `customers.view` right can open the Customers page from the dashb
 
 Users with the `products.view` right can open the Products page from the dashboard. The list defaults to active products and supports searching by product code and description, unit filtering, and pagination. Active product records are retrieved through the `product_active` database view, which excludes soft-deleted records. Current prices come from the latest non-deleted `pricehist` entry effective on or before today; products without a matching row show “No price set.” Deleted product records require the appropriate restore permission.
 
+Users with the `departments.view` right can open the Departments page from the dashboard. The module supports department code/name/description search, active and deleted status filters, pagination, and add/edit/delete/restore actions according to the matching department rights.
+
 ### S2-DBA-01: Customer and Product Active Views and Indexes
 
 The database migration `20261122160000_customer_product_active_indexes.sql` creates the `customer_active` and `product_active` views and supporting indexes for active customer and product searches.

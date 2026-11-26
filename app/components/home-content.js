@@ -20,6 +20,7 @@ export default function HomeContent() {
   const [authError, setAuthError] = useState("");
   const [canViewCustomers, setCanViewCustomers] = useState(false);
   const [canViewProducts, setCanViewProducts] = useState(false);
+  const [canViewDepartments, setCanViewDepartments] = useState(false);
 
   useEffect(() => {
     if (!session?.access_token) {
@@ -83,6 +84,41 @@ export default function HomeContent() {
       .catch(() => {
         if (active) {
           setCanViewProducts(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [session]);
+
+  useEffect(() => {
+    if (!session?.access_token) {
+      setCanViewDepartments(false);
+      return undefined;
+    }
+
+    let active = true;
+
+    fetch("/api/departments/access", {
+      cache: "no-store",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then(async (response) => {
+        if (!active) return;
+        if (!response.ok) {
+          setCanViewDepartments(false);
+          return;
+        }
+
+        const access = await response.json();
+        if (active) {
+          setCanViewDepartments(access.canViewDepartments === true);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setCanViewDepartments(false);
         }
       });
 
@@ -214,6 +250,14 @@ export default function HomeContent() {
                 href="/products"
               >
                 Products
+              </Link>
+            )}
+            {canViewDepartments && (
+              <Link
+                className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50"
+                href="/departments"
+              >
+                Departments
               </Link>
             )}
             <span>{session.user.email}</span>
