@@ -21,6 +21,7 @@ export default function HomeContent() {
   const [canViewCustomers, setCanViewCustomers] = useState(false);
   const [canViewProducts, setCanViewProducts] = useState(false);
   const [canViewDepartments, setCanViewDepartments] = useState(false);
+  const [canViewJobs, setCanViewJobs] = useState(false);
 
   useEffect(() => {
     if (!session?.access_token) {
@@ -119,6 +120,41 @@ export default function HomeContent() {
       .catch(() => {
         if (active) {
           setCanViewDepartments(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [session]);
+
+  useEffect(() => {
+    if (!session?.access_token) {
+      setCanViewJobs(false);
+      return undefined;
+    }
+
+    let active = true;
+
+    fetch("/api/jobs/access", {
+      cache: "no-store",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then(async (response) => {
+        if (!active) return;
+        if (!response.ok) {
+          setCanViewJobs(false);
+          return;
+        }
+
+        const access = await response.json();
+        if (active) {
+          setCanViewJobs(access.canViewJobs === true);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setCanViewJobs(false);
         }
       });
 
@@ -258,6 +294,14 @@ export default function HomeContent() {
                 href="/departments"
               >
                 Departments
+              </Link>
+            )}
+            {canViewJobs && (
+              <Link
+                className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50"
+                href="/jobs"
+              >
+                Jobs
               </Link>
             )}
             <span>{session.user.email}</span>

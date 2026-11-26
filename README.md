@@ -40,6 +40,8 @@ Users with the `products.view` right can open the Products page from the dashboa
 
 Users with the `departments.view` right can open the Departments page from the dashboard. The module supports department code/name/description search, active and deleted status filters, pagination, and add/edit/delete/restore actions according to the matching department rights.
 
+Users with the `jobs.view` right can open the Jobs page from the dashboard. The module supports job code/title/description search, active and deleted status filters, pagination, and add/edit/delete/restore actions according to the matching job rights.
+
 ### S2-DBA-01: Customer and Product Active Views and Indexes
 
 The database migration `20261122160000_customer_product_active_indexes.sql` creates the `customer_active` and `product_active` views and supporting indexes for active customer and product searches.
