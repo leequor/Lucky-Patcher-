@@ -78,3 +78,20 @@ Testing was split into two distinct execution layers: an automated unit test sui
   Status: Action required. Patch for LOG-04 is mandatory before final release.
 ======================================================================
 ```
+
+## Sprint 3 Job Module Verification
+
+**Plan ID:** S3-DEV-02
+**Task:** Job list and CRUD
+**Date:** November 26, 2026
+**Environment:** Next.js localhost and Supabase migration scripts
+
+| Check | Command / Evidence | Result |
+| :--- | :--- | :--- |
+| Automated unit tests | `npm test` | PASS — 50 tests passed |
+| Production build | `npm run build` | PASS — compiled and generated `/jobs` plus all Job API routes |
+| Job validation | Code/title required; field limits and non-text description rejected | PASS |
+| Job list query | Search escaping, status, and pagination validated | PASS |
+| Migration review | `20261126090000_create_jobs.sql` reviewed | RLS, active view, lifecycle RPCs, indexes, and audit trigger included |
+
+Supabase migration status: Pending application to the shared database. The migration must be reviewed and applied before the Job module can access live records.
