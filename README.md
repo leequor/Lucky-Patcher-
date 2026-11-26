@@ -219,7 +219,30 @@ customer details, and delete confirmation.
 
 </details>
 
+### Product management & price history
 
+<details>
+<summary><strong>07 · Product management</strong> — 5 screens</summary>
+
+**Scope:** Product details with price history, add/edit product forms,
+and add/edit dated price dialogs with scheduled-price handling.
+
+#### Product details and price history
+<img width="2003" height="1080" alt="Hope ERP · Product details and price history" src="https://github.com/user-attachments/assets/3905b9ab-46b5-417c-a2c0-4872a982994a" />
+
+#### Add product
+<img width="2003" height="1080" alt="Hope ERP · Add product" src="https://github.com/user-attachments/assets/0ebf1a19-a2af-431c-87b0-626fb3fffee5" />
+
+#### Edit product
+<img width="2003" height="1080" alt="Hope ERP · Edit product" src="https://github.com/user-attachments/assets/59f2a3ef-091d-45d3-b1b8-e7426675dcca" />
+
+#### Add dated price
+<img width="2003" height="1080" alt="Hope ERP · Add dated price" src="https://github.com/user-attachments/assets/0fca8f1f-04ec-4f75-bd1a-1da2a8565a5d" />
+
+#### Edit dated price
+<img width="2003" height="1080" alt="Hope ERP · Edit dated price" src="https://github.com/user-attachments/assets/57789ce4-b6ab-453d-a497-519e9c5462d9" />
+
+</details>
 
 
 ## Team workflow
