@@ -222,7 +222,7 @@ customer details, and delete confirmation.
 ### Product management & price history
 
 <details>
-<summary><strong>06 · Product management</strong> — 5 screens</summary>
+<summary><strong>07 · Product management</strong> — 5 screens</summary>
 
 **Scope:** Product details with price history, add/edit product forms,
 and add/edit dated price dialogs with scheduled-price handling.
