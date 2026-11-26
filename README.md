@@ -188,7 +188,7 @@ Expand a section to view its screens. Click an image to view it full size.
 
 </details>
 
-### Sprint 2 · S2-UIX-01
+### Customers
 
 <details>
 <summary><strong>06 · Customer management</strong> — 5 screens</summary>
