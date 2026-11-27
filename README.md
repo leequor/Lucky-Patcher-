@@ -244,6 +244,41 @@ and add/edit dated price dialogs with scheduled-price handling.
 
 </details>
 
+### Empty, error and confirm-delete states
+<details> 
+<summary><strong>08 · Customer and product states</strong> — 9 screens</summary>
+
+**Scope:** Empty and no-results states for the customer and product lists (searches for “Northwind” and “wireless keyboard”), validation errors on the Add customer and Add product forms, a delete confirmation for a product with no linked records, and blocked-delete dialogs when a customer has linked sales records or a product has linked dated prices.
+
+#### Customers · Empty list
+<img width="2003" height="1080" alt="Hope ERP · Customers · Empty list" src="https://github.com/user-attachments/assets/15909f0d-408b-40db-a0be-f48bb00981a3" />
+
+#### Customers · No search results
+<img width="2003" height="1080" alt="Hope ERP · Customers · No search results" src="https://github.com/user-attachments/assets/e4fd0f14-9217-4def-b396-a16a5ee3ccaa" />
+
+#### Products · Empty list
+<img width="2003" height="1080" alt="Hope ERP · Products · Empty list" src="https://github.com/user-attachments/assets/b0402b56-6712-4e3d-914f-608cdca01dbe" />
+
+#### Products · No search results
+<img width="2003" height="1080" alt="Hope ERP · Products · No search results" src="https://github.com/user-attachments/assets/eceb4e70-59f4-47d0-93ac-7cf00fb08f94" />
+
+#### Customer · Validation errors
+<img width="2003" height="1080" alt="Hope ERP · Customer · Validation errors" src="https://github.com/user-attachments/assets/d3e25c11-d5ac-439b-8bfa-813710d12ba2" />
+
+#### Product · Validation errors
+<img width="2003" height="1080" alt="Hope ERP · Product · Validation errors" src="https://github.com/user-attachments/assets/a07938d0-46e2-4a5d-9c84-d60aaade3872" />
+
+#### Customer · Delete blocked by linked records
+<img width="2003" height="1080" alt="Hope ERP · Customer · Delete blocked by linked records" src="https://github.com/user-attachments/assets/9f8511ad-aa35-4902-81ad-18840c336bc2" />
+
+#### Product · Delete confirmation
+<img width="2003" height="1080" alt="Hope ERP · Product · Delete confirmation" src="https://github.com/user-attachments/assets/ac149257-216a-4d53-b80a-3ac4d66aa72e" />
+
+#### Product · Delete blocked by linked records
+<img width="2003" height="1080" alt="Hope ERP · Product · Delete blocked by linked records" src="https://github.com/user-attachments/assets/480e6492-6d82-42bb-87a7-acf173c25e80" />
+
+</details>
+
 
 ## Team workflow
 1. Pick an issue on the project board and move it to In Progress
