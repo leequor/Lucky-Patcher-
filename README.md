@@ -244,10 +244,11 @@ and add/edit dated price dialogs with scheduled-price handling.
 
 </details>
 
-Empty, error and confirm-delete states
-<details> <summary><strong>Customer and product states</strong> — 9 screens</summary>
+### Empty, error and confirm-delete states
+<details> 
+<summary><strong>08 · Customer and product states</strong> — 9 screens</summary>
 
-Scope: Empty and no-results states for the customer and product lists (searches for “Northwind” and “wireless keyboard”), validation errors on the Add customer and Add product forms, a delete confirmation for a product with no linked records, and blocked-delete dialogs when a customer has linked sales records or a product has linked dated prices.
+**Scope:** Empty and no-results states for the customer and product lists (searches for “Northwind” and “wireless keyboard”), validation errors on the Add customer and Add product forms, a delete confirmation for a product with no linked records, and blocked-delete dialogs when a customer has linked sales records or a product has linked dated prices.
 
 #### Customers · Empty list
 <img width="2003" height="1080" alt="Hope ERP · Customers · Empty list" src="https://github.com/user-attachments/assets/15909f0d-408b-40db-a0be-f48bb00981a3" />
