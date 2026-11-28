@@ -63,6 +63,16 @@ npm run build
 npm start
 ```
 
+## Database Performance Report
+
+The Sprint 2 database search and index performance measurements are documented in [DBA Performance Report](docs/DBA-PERFORMANCE-REPORT.md).
+
+The report includes:
+- Customer, product, and price-history query benchmarks.
+- EXPLAIN ANALYZE execution plans.
+- Index tuning and verification results.
+- Before-and-after performance measurements.
+
 ## Database Migration Setup
 
 1. Authenticate with the Supabase CLI:
