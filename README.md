@@ -63,6 +63,35 @@ npm run build
 npm start
 ```
 
+## Demo Data Setup
+
+The project includes a reusable demo data seed script at
+`supabase/seed.sql`.
+
+The script inserts:
+- 5 demo customers
+- 5 demo products
+- 2 dated price history records per product
+
+### Running the Demo Seed
+
+1. Open the team's Supabase Dashboard.
+2. Navigate to SQL Editor.
+3. Open `supabase/seed.sql` from the repository.
+4. Copy the complete SQL script into a new SQL Editor query.
+5. Review the script and click Run.
+
+The seed script uses dedicated demo record codes and
+`ON CONFLICT DO NOTHING` to prevent duplicate records.
+It can safely be executed multiple times.
+
+Expected demo records:
+- 5 customers
+- 5 products
+- 10 price history records
+
+The script does not delete or overwrite existing records.
+
 ## Database Migration Setup
 
 1. Authenticate with the Supabase CLI:
